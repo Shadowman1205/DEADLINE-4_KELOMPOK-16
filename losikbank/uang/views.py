@@ -248,5 +248,5 @@ def delete_jenis_pekerjaan(request, id):
 #         getnasabah.jumlah_peminjaman = jumlah_peminjaman
 #         getnasabah.jumlah_peminjaman = jumlah_peminjaman
 #         getjenis_pekerjaan.save()
-#         messages.success(request, 'Data Jenis Pekerjaa berhasil diperbarui!')
+#         messages.success(request, 'Data Jenis Pekerja berhasil diperbarui!')
 #         return redirect('read_jenis_pekerjaan')
