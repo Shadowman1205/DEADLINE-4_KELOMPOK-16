@@ -196,36 +196,36 @@ def delete_jenis_pekerjaan(request, id):
     messages.error(request, "Data Jenis Pekerjaan berhasil dihapus!")
     return redirect('read_jenis_pekerjaan')
 
-# @role_required(['owner', 'admin', 'nasabah'])
-# def read_nasabah(request) : 
-#     nasabahobj = models.nasabah.objects.all()
-#     if not nasabahobj.exists() : 
-#         messages.error(request, "Data Nasabah Tidak Ditemukan!")
+@role_required(['owner', 'admin', 'nasabah'])
+def read_nasabah(request) : 
+    nasabahobj = models.nasabah.objects.all()
+    if not nasabahobj.exists() : 
+        messages.error(request, "Data Nasabah Tidak Ditemukan!")
 
-#     return render(request, 'nasabah/read_nasabah.html', { 
-#         'nasabahobj' : nasabahobj
-#     })    
+    return render(request, 'nasabah/read_nasabah.html', { 
+        'nasabahobj' : nasabahobj
+    })    
 
-# @login_required(login_url='login')
-# @role_required(['owner','nasabah'])
-# def create_nasabah(request):
-#     if request.method == 'GET':
-#         return render(request, 'nasabah/create_nasabah.html')
+@login_required(login_url='login')
+@role_required(['owner','nasabah'])
+def create_nasabah(request):
+    if request.method == 'GET':
+        return render(request, 'nasabah/create_nasabah.html')
 
-#     else :
-#         nama_pekerjaan = request.POST['nama_pekerjaan']
-#         jumlah_peminjaman = request.POST['jumlah_peminjaman']
-#         tanggal_pengajuan = request.POST['tanggal_pengajuan']
-#         periode_peminjaman = request.POST['periode_peminjaman']
+    else :
+        nama_pekerjaan = request.POST['nama_pekerjaan']
+        jumlah_peminjaman = request.POST['jumlah_peminjaman']
+        tanggal_pengajuan = request.POST['tanggal_pengajuan']
+        periode_peminjaman = request.POST['periode_peminjaman']
 
-#         models.peminjaman(
-#             id_jenis_pekerjaan = models.jenis_pekerjaan.objects.get(nama_nasabah = nama_nasabah),
-#             tanggal_pengajuan = tanggal_pengajuan,
-#             periode_peminjaman = periode_peminjaman,
-#         ).save()
-#         messages.success(request, 'Data peminjaman Berhasil Ditambahkan!')
+        models.peminjaman(
+            id_jenis_pekerjaan = models.jenis_pekerjaan.objects.get(nama_nasabah = nama_nasabah),
+            tanggal_pengajuan = tanggal_pengajuan,
+            periode_peminjaman = periode_peminjaman,
+        ).save()
+        messages.success(request, 'Data peminjaman Berhasil Ditambahkan!')
 
-#         return redirect('read_peminjaman')
+        return redirect('read_peminjaman')
 
 # @login_required(login_url='login')
 # @role_required(['owner','nasabah'])
