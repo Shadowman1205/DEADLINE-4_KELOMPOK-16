@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Jenis Pekerjaan</title>
+</head>
+<body>
+    <a href="{% url 'create_jenis_pekerjaan' %}"><button>Create Jenis Pekerjaan</button></a>
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>ID Jenis Pekerjaan</th>
+                <th>Nama Pekerjaan</th>
+                <th>Penghasilan per Bulan</th>
+                {% if is_owner %}
+                <th>Action</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for i in jenis_pekerjaanobj %}
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.id_jenis_pekerjaan }}</td>
+                <td>{{ i.nama_pekerjaan }}</td>
+                <td>{{ i.penghasilan_perbulan }}</td>
+                {% if is_owner %}
+                <td>
+                    <a href="{% url 'update_jenis_pekerjaan' i.id_jenis_pekerjaan %}"><button>Update Jenis Pekerjaan</button></a>
+                    <a href="{% url 'delete_jenis_pekerjaan' i.id_jenis_pekerjaan %}"><button>Delete Jenis Pekerjaan</button></a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+{% if messages %}
+<ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}

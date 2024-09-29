@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Jenis Pekerjaan</title>
+</head>
+<body>
+    <h3>Update Jenis Pekerjaan</h3>
+    <form method="post">
+        {% csrf_token %}
+        <label>Nama Pekerjaan</label>
+        <input type="text" name="nama_pekerjaan" value="{{ getjenis_pekerjaan.nama_pekerjaan }}">
+        <label>Penghasilan per Bulan</label>
+        <input type="number" name="penghasilan_perbulan" value="{{ getjenis_pekerjaan.penghasilan_perbulan }}">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
