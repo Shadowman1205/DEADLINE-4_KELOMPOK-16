@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Jenis Pekerjaan</title>
+</head>
+<body>
+    <a href="{% url 'create_jenis_pekerjaan' %}"><button>Create Jenis Pekerjaan</button></a>
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>ID Nasabah</th>
+                <th>Nama Nasabah</th>
+                <th>Umur Nasabah</th>
+                <th>Jenis Kelamin</th>
+                <th>Alamat Nasabah</th>
+                <th>Nama Perusahaan</th>
+                <th>Tingkat Pendidikan</th>
+                <th>Status Pernikahan</th>
+                <th>Nama Orang Tua</th>
+                <th>Nama Lengkap Kontak Darurat</th>
+                <th>Nomor Kontak Darurat</th>
+                <th>Hubungan Dengan Peminjam</th>
+                <th>Sisa Kontrak Kerja</th>
+                {% if is_owner %}
+                <th>Action</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for i in nasabahobj %}
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.id_nasabah }}</td>
+                <td>{{ i.nama_nasabah }}</td>
+                <td>{{ i.umur_nasabah }}</td>
+                <td>{{ i.jenis_kelamin }}</td>
+                <td>{{ i.alamat_nasabah }}</td>
+                <td>{{ i.nama_perusahaan }}</td>
+                <td>{{ i.tingkat_pendidikan }}</td>
+                <td>{{ i.status_pernikahan }}</td>
+                <td>{{ i.nama_orang_tua }}</td>
+                <td>{{ i.nama_lengkap_kontak_darurat }}</td>
+                <td>{{ i.nomor_kontak_darurat }}</td>
+                <td>{{ i.hubungan_dengan_peminjam }}</td>
+                <td>{{ i.sisa_kontrak_kerja }}</td>
+                {% if is_owner %}
+                <td>
+                    <a href="{% url 'update_nasabah' i.id_nasabah %}"><button>Update Nasabah</button></a>
+                    <a href="{% url 'delete_nasabah' i.id_nasabah %}"><button>Delete Nasabah</button></a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+{% if messages %}
+<ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
