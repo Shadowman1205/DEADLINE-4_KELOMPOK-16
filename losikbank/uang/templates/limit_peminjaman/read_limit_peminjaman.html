@@ -24,6 +24,7 @@
                 {% for i in limit_peminjamanobj %}
                 <td>{{ forloop.counter }}</td>
                 <td>{{ id.limit_peminjaman }}</td>
+                {% for i in jenis_pekerjaanobj %}
                 <td>{{ forloop.counter }}</td>
                 <td>{{ id.jenis_pekerjaan }}</td>
                 <td>{{ i.nominal_limit }}</td>

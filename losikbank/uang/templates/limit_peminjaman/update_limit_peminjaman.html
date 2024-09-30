@@ -3,25 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Limit Peminjaman</title>
+    <title>Limit Peminjaman</title>
 </head>
 <body>
     <h3>Update Limit Peminjaman</h3>
     <form method="post">
         {% csrf_token %}
-        <input type="hidden" name="id_limit_peminjaman" value="{{ limit_peminjaman.id_limit_peminjaman }}">
-        <label for="nominal_limit">Nominal Limit</label>
-        <input type="number" id="nominal_limit" name="nominal_limit" step="1" min="0" value="{{ limit_peminjaman.nominal_limit|default:'0' }}">
-        <br>
-        <label for="id_jenis_pekerjaan">Jenis Pekerjaan</label>
-        <select id="id_jenis_pekerjaan" name="id_jenis_pekerjaan">
-            <option value="">Pilih Jenis Pekerjaan</option>
-            {% for jenis in jenis_pekerjaan_list %}
-            <option value="{{ jenis.id }}" {% if jenis.id == limit_peminjaman.id_jenis_pekerjaan.id %}selected{% endif %}>{{ jenis.nama_pekerjaan }}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <button type="submit">Simpan</button>
+        <label>nominal_limit</label>
+        <input type="number" name="nominal_limit" value="{{ getlimit_peminjaman.nominal_limit }}">
+        <button type="submit">Submit</button>
     </form>
 </body>
 </html>
