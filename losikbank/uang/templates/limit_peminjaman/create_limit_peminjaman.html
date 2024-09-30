@@ -1,1 +1,20 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Limit Peminjaman</title>
+</head>
+<body>
+    <h3>Create Limit Peminjaman</h3>
+    <form action="post">
+        {% csrf_token %}
+        <label>Nominal Limit</label>
+        <input type="number" name="limit_peminjaman">
+        <select name="nama_pekerjaan">
+            {% for i in jenis_pekerjaanobj %}
+            <option value="{{i.nama_pekerjaan}}">{{i.nama_pekerjaan}}</option>
+        </select>
+        <label>
+    </form>
+</body>
