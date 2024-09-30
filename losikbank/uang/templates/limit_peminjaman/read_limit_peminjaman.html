@@ -23,13 +23,13 @@
             <tr>
                 {% for i in limit_peminjamanobj %}
                 <td>{{ forloop.counter }}</td>
-                <td>{{ i.id.limit_peminjaman }}</td>
-                <td>{{ i.id.jenis_pekerjaan }}</td>
+                <td>{{ i.id_limit_peminjaman }}</td>
+                <td>{{ i.id_jenis_pekerjaan }}</td>
                 <td>{{ i.nominal_limit }}</td>
                 {% if is_owner %}
                 <td>
-                    <a href="{% url 'update_limit_peminjaman' id.limit_peminjaman %}"><button>Update Limit Peminjaman</button></a>
-                    <a href="{% url 'delete_limit_peminjaman' id.limit_peminjaman %}"><button>Delete Limit Peminjaman</button></a>
+                    <a href="{% url 'update_limit_peminjaman' i.id_limit_peminjaman %}"><button>Update Limit Peminjaman</button></a>
+                    <a href="{% url 'delete_limit_peminjaman' i.id_limit_peminjaman %}"><button>Delete Limit Peminjaman</button></a>
                 </td>
                 {% endif %}
             </tr>
