@@ -196,57 +196,159 @@ def delete_jenis_pekerjaan(request, id):
     messages.error(request, "Data Jenis Pekerjaan berhasil dihapus!")
     return redirect('read_jenis_pekerjaan')
 
-# @role_required(['owner', 'admin', 'nasabah'])
-# def read_nasabah(request) : 
-#     nasabahobj = models.nasabah.objects.all()
-#     if not nasabahobj.exists() : 
-#         messages.error(request, "Data Nasabah Tidak Ditemukan!")
+    #CRUD NASABAH
+@login_required(login_url='login')
+@role_required(['owner', 'admin', 'nasabah'])
+def read_nasabah(request) : 
+    nasabahobj = models.nasabah.objects.all()
+    if not nasabahobj.exists() : 
+        messages.error(request, "Data Nasabah Tidak Ditemukan!")
 
-#     return render(request, 'nasabah/read_nasabah.html', { 
-#         'nasabahobj' : nasabahobj
-#     })    
+    return render(request, 'nasabah/read_nasabah.html', { 
+        'nasabahobj' : nasabahobj
+    })    
 
-# @login_required(login_url='login')
-# @role_required(['owner','nasabah'])
-# def create_nasabah(request):
-#     if request.method == 'GET':
-#         return render(request, 'nasabah/create_nasabah.html')
+@login_required(login_url='login')
+@role_required(['owner','nasabah'])
+def create_nasabah(request):
+    if request.method == 'GET':
+        return render(request, 'nasabah/create_nasabah.html')
 
-#     else :
-#         nama_pekerjaan = request.POST['nama_pekerjaan']
-#         jumlah_peminjaman = request.POST['jumlah_peminjaman']
-#         tanggal_pengajuan = request.POST['tanggal_pengajuan']
-#         periode_peminjaman = request.POST['periode_peminjaman']
+    else :
+        nama_pekerjaan = request.POST['nama_pekerjaan']
+        nama_nasabah = request.POST['nama_nasabah']
+        umur_nasabah = request.POST['umur_nasabah']
+        jenis_kelamin = request.POST['jenis_kelamin']
+        alamat_nasabah = request.POST['alamat_nasabah']
+        nama_perusahaan = request.POST['nama_perusahaan']
+        tingkat_pendidikan = request.POST['tingkat_pendidikan']
+        status_pernikahan = request.POST['status_pernikahan']
+        nama_orang_tua = request.POST['nama_orang_tua']
+        nama_lengkap_kontak_darurat = request.POST['nama_lengkap_kontak_darurat']
+        nomor_kontak_darurat = request.POST['nomor_kontak_darurat']
+        hubungan_dengan_peminjam = request.POST['hubungan_dengan_peminjam']
+        sisa_kontrak_kerja = request.POST['sisa_kontrak_kerja']
 
-#         models.peminjaman(
-#             id_jenis_pekerjaan = models.jenis_pekerjaan.objects.get(nama_nasabah = nama_nasabah),
-#             tanggal_pengajuan = tanggal_pengajuan,
-#             periode_peminjaman = periode_peminjaman,
-#         ).save()
-#         messages.success(request, 'Data peminjaman Berhasil Ditambahkan!')
+        models.nasabah(
+            id_jenis_pekerjaan = models.jenis_pekerjaan.objects.get(nama_pekerjaan = nama_pekerjaan),
+            nama_nasabah = nama_nasabah,
+            umur_nasabah = umur_nasabah,
+            jenis_kelamin = jenis_kelamin,
+            alamat_nasabah = alamat_nasabah
+            nama_perusahaan = nama_perusahaan,
+            tingkat_pendidikan = tingkat_pendidikan,
+            status_pernikahan = status_pernikahan,
+            nama_orang_tua = nama_orang_tua,
+            nama_lengkap_kontak_darurat = nama_lengkap_kontak_darurat,
+            nomor_kontak_darurat = nomor_kontak_darurat,
+            hubungan_dengan_peminjam = hubungan_dengan_peminjam,
+            sisa_kontrak_kerja = sisa_kontrak_kerja,
+        ).save()
+        messages.success(request, 'Data Nasabah berhasil ditambahkan!')
 
-#         return redirect('read_peminjaman')
+        return redirect('read_nasabah')
 
-# @login_required(login_url='login')
-# @role_required(['owner','nasabah'])
-# def update_nasabah(request, id):
-#     getnasabah = models.nasabah.objects.get(id_nasabah = id)
-#     if request.method == 'GET':
-#         return render(request, 'nasabah/update_nasabah.html', {
-#             'getnasabah' : getnasabah,
-#         })
+@login_required(login_url='login')
+@role_required(['owner','nasabah'])
+def update_nasabah(request, id):
+    getnasabah = models.nasabah.objects.get(id_nasabah = id)
+    if request.method == 'GET':
+        return render(request, 'nasabah/update_nasabah.html', {
+            'getnasabah' : getnasabah,
+        })
     
-#     else :
-#         nama_pekerjaan = request.POST['nama_pekerjaan']
-#         jumlah_peminjaman = request.POST['jumlah_peminjaman']
-#         tanggal_pengajuan = request.POST['tanggal_pengajuan']
-#         periode_peminjaman = request.POST['periode_peminjaman']
+    else :
+        nama_nasabah = request.POST['nama_nasabah']
+        umur_nasabah = request.POST['umur_nasabah']
+        jenis_kelamin = request.POST['jenis_kelamin']
+        alamat_nasabah = request.POST['alamat_nasabah']
+        nama_perusahaan = request.POST['nama_perusahaan']
+        tingkat_pendidikan = request.POST['tingkat_pendidikan']
+        status_pernikahan = request.POST['status_pernikahan']
+        nama_orang_tua = request.POST['nama_orang_tua']
+        nama_lengkap_kontak_darurat = request.POST['nama_lengkap_kontak_darurat']
+        nomor_kontak_darurat = request.POST['nomor_kontak_darurat']
+        hubungan_dengan_peminjam = request.POST['hubungan_dengan_peminjam']
+        sisa_kontrak_kerja = request.POST['sisa_kontrak_kerja']
        
-#         getnasabah.id_nasabah = getnasabah.id_nasabah
-#         getnasabah.nama_pekerjaan = nama_pekerjaan
-#         getnasabah.jumlah_peminjaman = jumlah_peminjaman
-#         getnasabah.jumlah_peminjaman = jumlah_peminjaman
-#         getnasabah.jumlah_peminjaman = jumlah_peminjaman
-#         getjenis_pekerjaan.save()
-#         messages.success(request, 'Data Jenis Pekerja berhasil diperbarui!')
-#         return redirect('read_jenis_pekerjaan')
+        getnasabah.id_nasabah = getnasabah.id_nasabah
+        getnasabah.nama_nasabah = nama_nasabah
+        getnasabah.umur_nasabah = umur_nasabah
+        getnasabah.jenis_kelamin = jenis_kelamin
+        getnasabah.alamat_nasabah = alamat_nasabah
+        getnasabah.nama_perusahaan = nama_perusahaan
+        getnasabah.tingkat_pendidikan = tingkat_pendidikan
+        getnasabah.status_pernikahan = status_pernikahan
+        getnasabah.nama_orang_tua = nama_orang_tua
+        getnasabah.nama_lengkap_kontak_darurat = nama_lengkap_kontak_darurat
+        getnasabah.nomor_kontak_darurat = nomor_kontak_darurat
+        getnasabah.hubungan_dengan_peminjam = hubungan_dengan_peminjam
+        getnasabah.sisa_kontrak_kerja = sisa_kontrak_kerja
+        getnasabah.save()
+        messages.success(request, 'Data Nasabah berhasil diperbarui!')
+        return redirect('read_nasabah')
+
+@login_required(login_url='login')
+@role_required(['owner'])
+def delete_nasabah(request, id):
+    getnasabah = models.nasabah.objects.get(id_nasabah = id)
+    getnasabah.delete()
+
+    messages.error(request, "Data Nasabah berhasil dihapus!")
+    return redirect('read_nasabah')
+
+#CRUD LIMIT PEMINJAMAN
+@login_required(login_url='login')
+@role_required(['owner', 'admin', 'nasabah'])
+def read_limit_peminjaman(request) : 
+    limit_peminjamanobj = models.limit_peminjaman.objects.all()
+    if not limit_peminjamanobj.exists() : 
+        messages.error(request, "Limit Peminjaman tidak ditemukan!")
+
+    return render(request, 'limit_peminjaman/read_limit_peminjaman.html', { 
+        'limit_peminjamanobj' : limit_peminjamanobj
+    })    
+
+@login_required(login_url='login')
+@role_required(['owner','admin'])
+def create_limit_peminjaman(request):
+    if request.method == 'GET':
+        return render(request, 'limit_peminjaman/create_limit_peminjaman.html')
+
+    else :
+        nama_pekerjaan = request.POST['nama_pekerjaan']
+        nominal_limit = request.POST['nominal_limit']
+
+        models.jenis_pekerjaan(
+            id_jenis_pekerjaan = models.jenis_pekerjaan.objects.get(nama_pekerjaan = nama_pekerjaan)
+            nominal_limit = nominal_limit,
+        ).save()
+        messages.success(request, 'Limit Pekerjaan berhasil ditambahkan!')
+        return redirect('read_limit_pekerjaan')
+
+@login_required(login_url='login')
+@role_required(['owner','admin'])
+def update_limit_peminjaman(request, id):
+    getlimit_peminjaman = models.limit_peminjaman.objects.get(id_limit_peminjaman = id)
+    if request.method == 'GET':
+        return render(request, 'limit_peminjaman/update_limit_peminjaman.html', {
+            'getlimit_peminjaman' : getlimit_peminjaman,
+        })
+    
+    else :
+        nominal_limit - request.POST['nominal_limit']
+       
+        getlimit_peminjaman.id_limit_peminjaman = getlimit_peminjaman.id_limit_peminjaman
+        getlimit_peminjaman.nominal_limit = nominal_limit
+        getlimit_peminjaman.save()
+        messages.success(request, 'Data Limit Peminjaman berhasil diperbarui!')
+        return redirect('read_limit_peminjaman')
+
+@login_required(login_url='login')
+@role_required(['owner'])
+def delete_limit_peminjaman(request, id):
+    getlimit_peminjaman = models.limit_peminjaman.objects.get(id_limit_peminjaman = id)
+    getlimit_peminjaman.delete()
+
+    messages.error(request, "Data Limit Peminjaman berhasil dihapus!")
+    return redirect('read_limit_peminjaman')
