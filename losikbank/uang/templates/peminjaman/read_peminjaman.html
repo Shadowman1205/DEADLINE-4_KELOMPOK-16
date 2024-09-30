@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Read Peminjaman</title>
 </head>
 <body>
-    <a href="{% url 'create_peminjaman' %}"></button>Create Peminjaman</a>buttot></a>
+    <a href="{% url 'create_peminjaman' %}"><button>Create Peminjaman</button></a>
     <table>
         <thead>
             <tr>
                 <th>No</th>
-                <th>ID Peminjaman</th>
-                <th>Nama Nasabah</th>
                 <th>Jumlah Peminjaman</th>
                 <th>Tanggal Pengajuan</th>
                 <th>Periode Peminjaman</th>
@@ -25,14 +23,13 @@
             <tr>
                 {% for i in peminjamanobj %}
                 <td>{{ forloop.counter }}</td>
-                <td>{{ i.id_peminjaman }}</td>
                 <td>{{ i.jumlah_peminjaman }}</td>
-                <td>{{ i.id_grade }}</td>
-                <td class="text-right">Rp{{ i.jumlah_peminjaman }}</td>
+                <td>{{ i.tanggal_pengajuan }}</td>
+                <td>{{ i.periode_peminjaman }}</td>
                 {% if is_owner %}
                 <td>
-                    <a href="{% url 'update_peminjaman' i.id_peminjaman %}"><button>Update Komoditas</button></a>
-                    <a href="{% url 'delete_peminjaman' i.id_peminjaman %}"><button>Delete Komoditas</button></a>
+                    <a href="{% url 'update_peminjaman' i.peminjaman %}"><button>Update Peminjaman</button></a>
+                    <a href="{% url 'delete_peminjaman' i.peminjaman %}"><button>Delete Peminjaman</button></a>
                 </td>
                 {% endif %}
             </tr>

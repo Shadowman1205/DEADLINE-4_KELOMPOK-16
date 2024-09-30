@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Peminjaman</title>
+</head>
+<body>
+    <h3>Update Peminjaman</h3>
+    <form method="post">
+        {% csrf_token %}
+        <label>Jumlah Peminjaman</label>
+        <input type="number" name="jumlah_peminjaman" value="{{ getjumlah_peminjaman.jumlah_peminjaman }}">
+        <label>Tanggal Pengajuan</label>
+        <input type="number" name="tanggal_pengajuan" value="{{ gettanggal_pengajuan.tanggal_pengajuan }}">
+        <label>Periode Peminjaman</label>
+        <input type="number" name="periode_peminjaman" value="{{ getperiode_peminjaman.periode_peminjaman }}">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
