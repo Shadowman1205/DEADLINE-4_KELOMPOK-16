@@ -72,9 +72,11 @@ def create_peminjaman(request):
         return render(request, 'peminjaman/create_peminjaman.html')
 
     else :
+        nama_nasabah = request.POST['nama_nasabah']
         jumlah_peminjaman = request.POST['jumlah_peminjaman']
         tanggal_pengajuan = request.POST['tanggal_pengajuan']
         periode_peminjaman = request.POST['periode_peminjaman']
+        status_peminjaman = request.POST['status_pinjaman']
 
         peminjamanobj = models.peminjaman.objects.filter(jumlah_peminjaman = jumlah_peminjaman, id_nasabah__nama_nasabah = nama_nasabah)
         if peminjamanobj.exist():
@@ -82,9 +84,11 @@ def create_peminjaman(request):
 
         else :
             models.peminjaman(
-                id_nasabah = models.nasabah.objects.get(jumlah_peminjaman = jumlah_peminjaman),
+                id_nasabah = models.nasabah.objects.get(nama_nasabah = nama_nasabah),
+                jumlah_peminjaman = jumlah_peminjaman,
                 tanggal_pengajuan = tanggal_pengajuan,
                 periode_peminjaman = periode_peminjaman,
+                status_pinjaman = status_pinjaman,
             ).save()
             mesaages.success(request, 'Data peminjaman Berhasil Ditambahkan!')
 
@@ -109,17 +113,19 @@ def update_peminjaman(request, id):
         jumlah_peminjaman = request.POST['jumlah_peminjaman']
         tanggal_pengajuan = request.POST['tanggal_pengajuan']
         periode_peminjaman = request.POST['periode_peminjaman']
+        status_pinjaman = request.POST['status_pinjaman']
 
-        peminjamanobj = models.peminjaman.objects.filter(nama_peminjaman = nama_peminjaman, id_nasabah__nama_nasabah = nama_nasabah)
+        peminjamanobj = models.peminjaman.objects.filter(jumlah_peminjaman = jumlah_peminjaman, id_nasabah__nama_nasabah = nama_nasabah)
         if peminjamanobj.exist() and getpeminjaman.jumlah_peminjaman != jumlah_peminjaman and getpeminjaman.id_nasabah.nama_nasabah != nama_nasabah :
             messages.error(request, 'Data peminjaman Sudah Ada!')
             return redirect('update_peminjaman', id)
 
         getpeminjaman.id_peminjaman = getpeminjaman.id_peminjaman
-        getpeminjaman.id_nasabah = models.nasabah.objects.get(nama_nasabahh = nama_nasabah)
+        getpeminjaman.id_nasabah = models.nasabah.objects.get(nama_nasabah = nama_nasabah)
         getpeminjaman.jumlah_peminjaman = jumlah_peminjaman
         getpeminjaman.tanggal_pengajuan = tanggal_pengajuan
         getpeminjaman.periode_peminjaman = periode_peminjaman
+        getpinjaman.status_peminjaman = status_peminjaman
 
         getpeminjaman.save()
 
@@ -236,7 +242,7 @@ def create_nasabah(request):
             nama_nasabah = nama_nasabah,
             umur_nasabah = umur_nasabah,
             jenis_kelamin = jenis_kelamin,
-            alamat_nasabah = alamat_nasabah
+            alamat_nasabah = alamat_nasabah,
             nama_perusahaan = nama_perusahaan,
             tingkat_pendidikan = tingkat_pendidikan,
             status_pernikahan = status_pernikahan,
@@ -260,6 +266,7 @@ def update_nasabah(request, id):
         })
     
     else :
+        nama_pekerjaan = request.POST['nama_pekerjaan']
         nama_nasabah = request.POST['nama_nasabah']
         umur_nasabah = request.POST['umur_nasabah']
         jenis_kelamin = request.POST['jenis_kelamin']
@@ -274,6 +281,7 @@ def update_nasabah(request, id):
         sisa_kontrak_kerja = request.POST['sisa_kontrak_kerja']
        
         getnasabah.id_nasabah = getnasabah.id_nasabah
+        getnasabah.id_jenis_pekerjaan = models.jenis_pekerjaan.objects.get(nama_pekerjaan = nama_pekerjaan)
         getnasabah.nama_nasabah = nama_nasabah
         getnasabah.umur_nasabah = umur_nasabah
         getnasabah.jenis_kelamin = jenis_kelamin
@@ -322,7 +330,7 @@ def create_limit_peminjaman(request):
         nominal_limit = request.POST['nominal_limit']
 
         models.jenis_pekerjaan(
-            id_jenis_pekerjaan = models.jenis_pekerjaan.objects.get(nama_pekerjaan = nama_pekerjaan)
+            id_jenis_pekerjaan = models.jenis_pekerjaan.objects.get(nama_pekerjaan = nama_pekerjaan),
             nominal_limit = nominal_limit,
         ).save()
         messages.success(request, 'Limit Pekerjaan berhasil ditambahkan!')
