@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,14 +6,20 @@
 </head>
 <body>
     <h3>Create Limit Peminjaman</h3>
-    <form action="post">
+    <form method="post">
         {% csrf_token %}
-        <label>Nominal Limit</label>
-        <input type="number" name="limit_peminjaman">
-        <select name="nama_pekerjaan">
-            {% for i in jenis_pekerjaanobj %}
-            <option value="{{i.nama_pekerjaan}}">{{i.nama_pekerjaan}}</option>
+        <label for="nominal_limit">Nominal Limit</label>
+        <input type="number" id="nominal_limit" name="nominal_limit" step="1" min="0">
+        <br>
+        <label for="id_jenis_pekerjaan">Jenis Pekerjaan</label>
+        <select id="id_jenis_pekerjaan" name="id_jenis_pekerjaan">
+            <option value="">Pilih Jenis Pekerjaan</option>
+            {% for jenis in jenis_pekerjaanobj %}
+            <option value="{{ jenis.id }}">{{ jenis.nama_pekerjaan }}</option>
+            {% endfor %}
         </select>
-        <label>
+        <br>
+        <button type="submit">Simpan</button>
     </form>
 </body>
+</html> 
