@@ -20,8 +20,8 @@
             </tr>
         </thead>
         <tbody>
-            {% for i in limit_peminjamanobj %}
             <tr>
+                {% for i in limit_peminjamanobj %}
                 <td>{{ forloop.counter }}</td>
                 <td>{{ i.id.limit_peminjaman }}</td>
                 <td>{{ i.id.jenis_pekerjaan }}</td>
