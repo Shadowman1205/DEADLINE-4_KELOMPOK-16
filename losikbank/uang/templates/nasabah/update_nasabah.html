@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Nasabah</title>
+</head>
+<body>
+    <h3>Update Nasabahn</h3>
+    <form method="post">
+        {% csrf_token %}
+        <label>Nama Nasabah</label>
+        <input type="text" name="nama_nasabah" value="{{ getnasabah.nama_nasabah }}">
+        <label>Umur Nasabah</label>
+        <input type="number" name="umur_nasabah" value="{{ getnasabah.umur_nasabah }}">
+        <label>Jenis Kelamin</label>
+        <input type="text" name="jenis_kelamin" value="{{ getnasabah.jenis_kelamin }}">
+        <label>Alamat Nasabah</label>
+        <input type="text" name="alamat_nasabah" value="{{ getnasabah.alamat_nasabah }}">
+        <label>Nama Perusahaan</label>
+        <input type="text" name="nama_perusahaan" value="{{ getnasabah.nama_perusahaan }}">
+        <label>Tingkat Pendidikan</label>
+        <input type="text" name="tingkat_pendidikan" value="{{ getnasabah.tingkat_pendidikan }}">
+        <label>Status Pernikahan</label>
+        <label><input type="checkbox" name="status_pernikahan" value="{{ getnasabah.status_pernikahan }}">Menikah</input></label>
+        <label>Nama Orang Tua</label>
+        <input type="text" name="nama_orang_tua" value="{{ getnasabah.nama_orang_tua }}">
+        <label>Nama Lengkap Kontak Darurat</label>
+        <input type="text" name="nama_lengkap_kontak_darurat" value="{{ getnasabah.nama_lengkap_kontak_darurat }}">
+        <label>Hubungan Dengan Peminjam</label>
+        <input type="text" name="hubungan_dengan_peminjam" value="{{ getnasabah.hubungan_dengan_peminjam }}">
+        <label>Sisa Kontrak Kerja</label>
+        <input type="number" name="penghasilan_perbulan" value="{{ getnasabah.penghasilan_perbulan }}">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
