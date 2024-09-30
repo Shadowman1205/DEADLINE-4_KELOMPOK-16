@@ -10,10 +10,17 @@
     <form method="post">
         {% csrf_token %}
         <label>Nama Pekerjaan</label>
-        <input type="text" name="nama_pekerjaan" value="{{ getjenis_pekerjaan.nama_pekerjaan }}">
+        <input type="text" name="nama_pekerjaan" value="{{ getjenis_pekerjaan.nama_pekerjaan }}"/>
         <label>Penghasilan per Bulan</label>
-        <input type="number" name="penghasilan_perbulan" value="{{ getjenis_pekerjaan.penghasilan_perbulan }}">
+        <input type="number" name="penghasilan_perbulan" value="{{ getjenis_pekerjaan.penghasilan_perbulan }}"/>
         <button type="submit">Submit</button>
     </form>
 </body>
 </html>
+{% if messages %}
+{% for i in messages %}
+<ul>
+    <li>{{ i }}</li>
+</ul>
+{% endfor %}
+{% endif %}

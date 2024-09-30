@@ -17,3 +17,10 @@
     </form>
 </body>
 </html>
+{% if messages %}
+{% for message in messages %}
+<ul>
+    <li>{{ message }}</li>
+</ul>
+{% endfor %}
+{% endif %}

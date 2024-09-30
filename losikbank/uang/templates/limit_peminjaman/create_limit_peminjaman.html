@@ -9,23 +9,23 @@
     <h3>Create Limit Peminjaman</h3>
     <form method="post">
         {% csrf_token %}
-        <label>nama Pekerjaan</label>
+        <label>Nama Pekerjaan</label>
         <select name="nama_pekerjaan">
             {% for i in jenis_pekerjaanobj %}
-            <option value="{{i.nama_pekerjaan}}">Nama Pekerjaan</option>
+            <option value="{{i}}">{{i}}</option>
             {% endfor %}
         </select>
         <br><br>
-        <label>nama Pekerjaan</label>
-        <select name="nama_pekerjaan">
-            {% for i in jenis_pekerjaanobj %}
-            <option value="{{i.penghasilan_perbulan}}">Penghasilan Perbulan</option>
-            {% endfor %}
-        </select>
-        <br></br>
-        <label>nominal_limit</label>
+        <label>Nominal_limit</label>
         <input type="number" name="nominal_limit" >
         <button type="submit">Submit</button>
     </form>
 </body>
 </html>
+{% if messages %}
+{% for message in messages %}
+<ul>
+    <li>{{ message }}</li>
+</ul>
+{% endfor %}
+{% endif %}

@@ -73,6 +73,7 @@ def create_peminjaman(request):
 
     else :
         nama_nasabah = request.POST['nama_nasabah']
+        nominal_limit = request.POST['nominal_limit']
         jumlah_peminjaman = request.POST['jumlah_peminjaman']
         tanggal_pengajuan = request.POST['tanggal_pengajuan']
         periode_peminjaman = request.POST['periode_peminjaman']
@@ -85,6 +86,7 @@ def create_peminjaman(request):
         else :
             models.peminjaman(
                 id_nasabah = models.nasabah.objects.get(nama_nasabah = nama_nasabah),
+                id_limit_peminjaman = models.limit_peminjaman.objects.get(nominal_limit = nominal_limit),
                 jumlah_peminjaman = jumlah_peminjaman,
                 tanggal_pengajuan = tanggal_pengajuan,
                 periode_peminjaman = periode_peminjaman,
@@ -110,6 +112,7 @@ def update_peminjaman(request, id):
     
     else :
         nama_nasabah = request.POST['nama_nasabah']
+        nominal_limit = request.POST['nominal_limit']
         jumlah_peminjaman = request.POST['jumlah_peminjaman']
         tanggal_pengajuan = request.POST['tanggal_pengajuan']
         periode_peminjaman = request.POST['periode_peminjaman']
@@ -163,7 +166,7 @@ def create_jenis_pekerjaan(request):
         nama_pekerjaan = request.POST['nama_pekerjaan']
         penghasilan_perbulan = request.POST['penghasilan_perbulan']
 
-        jenis_pekerjaanobj = models.jenis_pekerjaan.objects.filter(nama_pekerjaan = nama_pekerjaan)
+        jenis_pekerjaanobj = models.jenis_pekerjaan.objects.filter(nama_pekerjaan = nama_pekerjaan, penghasilan_perbulan = penghasilan_perbulan)
         if jenis_pekerjaanobj.exists():
             messages.error(request, 'Jenis Pekerjaan sudah ada')
             return redirect('create_jenis_pekerjaan')
@@ -187,13 +190,26 @@ def update_jenis_pekerjaan(request, id):
     else :
         nama_pekerjaan = request.POST['nama_pekerjaan']
         penghasilan_perbulan = request.POST['penghasilan_perbulan']
-       
-        getjenis_pekerjaan.id_jenis_pekerjaan = getjenis_pekerjaan.id_jenis_pekerjaan
-        getjenis_pekerjaan.nama_pekerjaan = nama_pekerjaan
-        getjenis_pekerjaan.penghasilan_perbulan = penghasilan_perbulan
-        getjenis_pekerjaan.save()
-        messages.success(request, 'Data Jenis Pekerjaan berhasil diperbarui!')
-        return redirect('read_jenis_pekerjaan')
+        try :
+            jenis_pekerjaanobj = models.jenis_pekerjaan.objects.get(nama_pekerjaan = nama_pekerjaan, penghasilan_perbulan = penghasilan_perbulan)
+            if getjenis_pekerjaan.nama_pekerjaan == jenis_pekerjaanobj.nama_pekerjaan and  getjenis_pekerjaan.penghasilan_perbulan == jenis_pekerjaanobj.penghasilan_perbulan:
+                getjenis_pekerjaan.id_jenis_pekerjaan = getjenis_pekerjaan.id_jenis_pekerjaan
+                getjenis_pekerjaan.nama_pekerjaan = nama_pekerjaan
+                getjenis_pekerjaan.penghasilan_perbulan = penghasilan_perbulan
+                getjenis_pekerjaan.save()
+                messages.success(request, 'Data Jenis Pekerjaan berhasil diperbarui!')
+                return redirect('read_jenis_pekerjaan')
+
+            else :
+                messages.error(request, 'Data Jenis Pekerjaan Sudah Ada!')
+                return redirect('update_jenis_pekerjaan', id)
+        except :
+            getjenis_pekerjaan.id_jenis_pekerjaan = getjenis_pekerjaan.id_jenis_pekerjaan
+            getjenis_pekerjaan.nama_pekerjaan = nama_pekerjaan
+            getjenis_pekerjaan.penghasilan_perbulan = penghasilan_perbulan
+            getjenis_pekerjaan.save()
+            messages.success(request, 'Data Jenis Pekerjaan berhasil diperbarui!')
+            return redirect('read_jenis_pekerjaan') 
 
 @login_required(login_url='login')
 @role_required(['owner'])
@@ -322,19 +338,35 @@ def read_limit_peminjaman(request) :
 @login_required(login_url='login')
 @role_required(['owner','admin'])
 def create_limit_peminjaman(request):
+    jenis_pekerjaanobj = models.jenis_pekerjaan.objects.all()
     if request.method == 'GET':
-        return render(request, 'limit_peminjaman/create_limit_peminjaman.html')
+        return render(request, 'limit_peminjaman/create_limit_peminjaman.html', {
+            'jenis_pekerjaanobj' : jenis_pekerjaanobj
+        })
 
     else :
         nama_pekerjaan = request.POST['nama_pekerjaan']
         nominal_limit = request.POST['nominal_limit']
 
-        models.jenis_pekerjaan(
-            id_jenis_pekerjaan = models.jenis_pekerjaan.objects.get(nama_pekerjaan = nama_pekerjaan),
-            nominal_limit = nominal_limit,
-        ).save()
-        messages.success(request, 'Limit Pekerjaan berhasil ditambahkan!')
-        return redirect('read_limit_pekerjaan')
+        part1, part2 = nama_pekerjaan.split(' - ')
+
+        part1 = part1.strip()
+        part2 = int(part2.strip())
+
+        getlimitpeminjaman = models.jenis_pekerjaan.objects.get(nama_pekerjaan = part1, penghasilan_perbulan = part2)
+        limitpeminjamanobj = models.limit_peminjaman.objects.filter(id_jenis_pekerjaan = getlimitpeminjaman)
+
+        if limitpeminjamanobj.exists() :
+            messages.error(request, 'Data Limit Peminjaman Sudah Ada!')
+            return redirect('create_limit_peminjaman')
+
+        else :
+            models.limit_peminjaman(
+                id_jenis_pekerjaan = models.jenis_pekerjaan.objects.get(nama_pekerjaan = part1, penghasilan_perbulan = part2),
+                nominal_limit = nominal_limit,
+            ).save()
+            messages.success(request, 'Limit Pekerjaan berhasil ditambahkan!')
+            return redirect('read_limit_peminjaman')
 
 @login_required(login_url='login')
 @role_required(['owner','admin'])
