@@ -54,6 +54,7 @@ def performlogout(request) :
     logout(request)
     return redirect("login")
 
+#CRUD PEMINJAMAN
 @role_required(['owner', 'admin', 'nasabah'])
 def read_peminjaman(request) : 
     peminjamanobj = models.peminjaman.objects.all()
@@ -134,6 +135,7 @@ def delete_peminjaman(request, id):
     messages.error(request, "Data peminjaman berhasil dihapus!")
     return redirect('read_peminjaman')
 
+#CRUD JENIS PEKERJAAN
 @login_required(login_url='login')
 @role_required(['owner', 'admin', 'nasabah'])
 def read_jenis_pekerjaan(request) : 
@@ -184,7 +186,7 @@ def update_jenis_pekerjaan(request, id):
         getjenis_pekerjaan.nama_pekerjaan = nama_pekerjaan
         getjenis_pekerjaan.penghasilan_perbulan = penghasilan_perbulan
         getjenis_pekerjaan.save()
-        messages.success(request, 'Data Jenis Pekerjaa berhasil diperbarui!')
+        messages.success(request, 'Data Jenis Pekerjaan berhasil diperbarui!')
         return redirect('read_jenis_pekerjaan')
 
 @login_required(login_url='login')
@@ -196,7 +198,7 @@ def delete_jenis_pekerjaan(request, id):
     messages.error(request, "Data Jenis Pekerjaan berhasil dihapus!")
     return redirect('read_jenis_pekerjaan')
 
-    #CRUD NASABAH
+#CRUD NASABAH
 @login_required(login_url='login')
 @role_required(['owner', 'admin', 'nasabah'])
 def read_nasabah(request) : 
