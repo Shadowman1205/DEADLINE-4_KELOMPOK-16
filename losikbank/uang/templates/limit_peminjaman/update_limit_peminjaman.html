@@ -9,9 +9,29 @@
     <h3>Update Limit Peminjaman</h3>
     <form method="post">
         {% csrf_token %}
-        <label>nominal_limit</label>
-        <input type="number" name="nominal_limit" value="{{ getlimit_peminjaman.nominal_limit }}">
-        <button type="submit">Submit</button>
+        <label>nama Pekerjaan</label>
+        <select name="nama_pekerjaan">
+            {% for i in jenis_pekerjaanobj %}
+            {% if i.nama_pekerjaan == nama_pekerjaan %}
+            <option selected value="{{i.nama_pekerjaan}}">Nama Pekerjaan</option>
+            {% else %}
+            <option value="{{i.nama_pekerjaan}}">Nama Pekerjaan</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+        <br><br>
+        <label>nama Pekerjaan</label>
+        <select name="nama_pekerjaan">
+            {% for i in jenis_pekerjaanobj %}
+            {% if i.penghasilan_perbulan == penghasilan_perbulan %}
+            <option select value="{{i.penghasilan_perbulan}}">Penghasilan Perbulan</option>
+            {% if %}
+            <option value="{{i.penghasilan_perbulan}}">Penghasilan Perbulan</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+        <label>Nominal Limit</label>
+        <input type="text" name="nominal_limit" value="{{ getjenis_pekerjaan.nama_pekerjaan }}"required>
     </form>
 </body>
 </html>
