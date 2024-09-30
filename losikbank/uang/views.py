@@ -76,7 +76,7 @@ def create_peminjaman(request):
         jumlah_peminjaman = request.POST['jumlah_peminjaman']
         tanggal_pengajuan = request.POST['tanggal_pengajuan']
         periode_peminjaman = request.POST['periode_peminjaman']
-        status_peminjaman = request.POST['status_pinjaman']
+        status_peminjaman = request.POST['status_peminjaman']
 
         peminjamanobj = models.peminjaman.objects.filter(jumlah_peminjaman = jumlah_peminjaman, id_nasabah__nama_nasabah = nama_nasabah)
         if peminjamanobj.exist():
@@ -88,16 +88,16 @@ def create_peminjaman(request):
                 jumlah_peminjaman = jumlah_peminjaman,
                 tanggal_pengajuan = tanggal_pengajuan,
                 periode_peminjaman = periode_peminjaman,
-                status_pinjaman = status_pinjaman,
+                status_peminjaman = status_peminjaman,
             ).save()
             mesaages.success(request, 'Data peminjaman Berhasil Ditambahkan!')
 
-        return redirect('read_peminjaman')
+            return redirect('read_peminjaman')
             
 @login_required(login_url='login')
 @role_required(['owner'])
 def update_peminjaman(request, id):
-    nasabahobj = models.grade.objects.all()
+    nasabahobj = models.nasabah.objects.all()
     getpeminjaman = models.peminjaman.objects.get(id_peminjaman = id)
     nama_nasabah = getpeminjaman.id_nasabah.nama_nasabah
     if request.method == 'GET':
@@ -113,7 +113,7 @@ def update_peminjaman(request, id):
         jumlah_peminjaman = request.POST['jumlah_peminjaman']
         tanggal_pengajuan = request.POST['tanggal_pengajuan']
         periode_peminjaman = request.POST['periode_peminjaman']
-        status_pinjaman = request.POST['status_pinjaman']
+        status_peminjaman = request.POST['status_peminjaman']
 
         peminjamanobj = models.peminjaman.objects.filter(jumlah_peminjaman = jumlah_peminjaman, id_nasabah__nama_nasabah = nama_nasabah)
         if peminjamanobj.exist() and getpeminjaman.jumlah_peminjaman != jumlah_peminjaman and getpeminjaman.id_nasabah.nama_nasabah != nama_nasabah :
@@ -125,7 +125,7 @@ def update_peminjaman(request, id):
         getpeminjaman.jumlah_peminjaman = jumlah_peminjaman
         getpeminjaman.tanggal_pengajuan = tanggal_pengajuan
         getpeminjaman.periode_peminjaman = periode_peminjaman
-        getpinjaman.status_peminjaman = status_peminjaman
+        getpeminjaman.status_peminjaman = status_peminjaman
 
         getpeminjaman.save()
 

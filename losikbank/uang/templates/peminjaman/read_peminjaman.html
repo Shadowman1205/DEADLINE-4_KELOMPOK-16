@@ -11,9 +11,11 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>ID Peminjaman</th>
                 <th>Jumlah Peminjaman</th>
                 <th>Tanggal Pengajuan</th>
                 <th>Periode Peminjaman</th>
+                <th>Status Peminjaman</th>
                 {% if is_owner %}
                 <th>Action</th>
                 {% endif %}
@@ -23,13 +25,15 @@
             <tr>
                 {% for i in peminjamanobj %}
                 <td>{{ forloop.counter }}</td>
+                <td>{{ i.id_peminjaman }}</td>
                 <td>{{ i.jumlah_peminjaman }}</td>
                 <td>{{ i.tanggal_pengajuan }}</td>
                 <td>{{ i.periode_peminjaman }}</td>
+                <td>{{ i.status_peminjaman }}</td>
                 {% if is_owner %}
                 <td>
-                    <a href="{% url 'update_peminjaman' i.peminjaman %}"><button>Update Peminjaman</button></a>
-                    <a href="{% url 'delete_peminjaman' i.peminjaman %}"><button>Delete Peminjaman</button></a>
+                    <a href="{% url 'update_peminjaman' i.id_peminjaman %}"><button>Update Peminjaman</button></a>
+                    <a href="{% url 'delete_peminjaman' i.id_peminjaman %}"><button>Delete Peminjaman</button></a>
                 </td>
                 {% endif %}
             </tr>
