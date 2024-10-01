@@ -72,7 +72,7 @@ def create_peminjaman(request):
         return render(request, 'peminjaman/create_peminjaman.html')
 
     else :
-        try
+        try:
             nama_nasabah = request.POST['nama_nasabah']
             nominal_limit = request.POST['nominal_limit']
             jumlah_peminjaman = request.POST['jumlah_peminjaman']
