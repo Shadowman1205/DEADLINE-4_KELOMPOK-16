@@ -9,24 +9,28 @@ from .decorators import role_required
 # Create your views here.
 
 def loginview(request) : 
-    if request.user.is_authenticated :
-        group = None 
-        if request.user.groups.exists() : 
-            group = request.user.groups.all()[0].name
-
-        if group == 'nasabah' : 
-            return redirect('read_peminjaman') 
-        elif group in ['admin','owner'] : 
-            return redirect('read_peminjaman')
-        else :
-            return redirect('read_peminjaman')
-    else : 
-        return render(request, "base/login.html")
+    try:
+        if request.user.is_authenticated :
+            group = None 
+            if request.user.groups.exists() : 
+                group = request.user.groups.all()[0].name
+    
+            if group == 'nasabah' : 
+                return redirect('read_peminjaman') 
+            elif group in ['admin','owner'] : 
+                return redirect('read_peminjaman')
+            else :
+                return redirect('read_peminjaman')
+        else : 
+            return render(request, "base/login.html")
+    except Exception as e:
+        messages.error(request, f"Error: {str(e)}")
+        return redirect('login)
 
 def performlogin(request) : 
     if request.method !="POST" :
         return HttpResponse("Method not Allowed")
-    else:
+    try:
         username_login = request.POST['username']
         password_login = request.POST['password'] 
         userobj = authenticate(request, username=username_login, password=password_login)
@@ -42,12 +46,19 @@ def performlogin(request) :
         else : 
             messages.error(request,"Username atau Password salah !!!")
             return redirect("login") 
+    except Exception as e:
+        messages.error(request, f"Login Error: {str(e)}")
+        return redirect('login')
 
 @login_required(login_url="login")
-def logoutview(request) : 
-    logout(request)
-    messages.info(request, "Berhasil Logout")
-    return redirect('Login')
+def logoutview(request) :
+    try:
+        logout(request)
+        messages.info(request, "Berhasil Logout")
+        return redirect('Login')
+    except Exception as e:
+        messages.error(request, f"Logout Error: {str(e)}")
+        return redirect('login')
 
 @login_required(login_url="login")
 def performlogout(request) : 
@@ -57,16 +68,19 @@ def performlogout(request) :
 #CRUD PEMINJAMAN
 @role_required(['owner', 'admin', 'nasabah'])
 def read_peminjaman(request):
-    peminjamanobj = models.peminjaman.objects.all()
+    try:
+        peminjamanobj = models.peminjaman.objects.all()
+        if not peminjamanobj.exists():
+            messages.error(request, "Data peminjaman tidak ditemukan!")
+            return redirect('create_peminjaman')  
     
-    if not peminjamanobj.exists():
-        messages.error(request, "Data peminjaman tidak ditemukan!")
-        return redirect('create_peminjaman')  
-
-    return render(request, 'peminjaman/read_peminjaman.html', {
-        'peminjamanobj': peminjamanobj
-    })
-    
+        return render(request, 'peminjaman/read_peminjaman.html', {
+            'peminjamanobj': peminjamanobj
+        })
+    except Exception as e:
+        messages.error(request, f"Logout Error: {str(e)}")
+        return redirect('login')
+        
 
 @login_required(login_url='login')
 @role_required(['owner', 'admin'])
