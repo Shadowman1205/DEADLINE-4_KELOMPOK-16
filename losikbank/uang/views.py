@@ -235,7 +235,7 @@ def create_jenis_pekerjaan(request):
 @login_required(login_url='login')
 @role_required(['owner'])
 def update_jenis_pekerjaan(request, id):
-    getjenis_pekerjaan = get_object_or_404(models.jenis_pekerjaan, id_jenis_pekerjaan=id)
+    getjenis_pekerjaan = models.jenis_pekerjaan.objects.get (id_jenis_pekerjaan=id)
     
     if request.method == 'GET':
         return render(request, 'jenis_pekerjaan/update_jenis_pekerjaan.html', {
