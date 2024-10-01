@@ -150,8 +150,7 @@ def create_peminjaman(request):
             messages.error(request, f'Terjadi kesalahan: {str(e)}')
             return redirect('create_peminjaman')
 
-        return redirect('read_peminjaman')
-
+            
 @login_required(login_url='login')
 @role_required(['owner'])
 def update_peminjaman(request, id):
@@ -210,30 +209,9 @@ def update_peminjaman(request, id):
         except Exception as e:
             messages.error(request, f'Terjadi kesalahan: {str(e)}')
             return redirect('update_peminjaman', id=id)
-    
-    else :
-        try:
-            nama_nasabah = request.POST['nama_nasabah']
-            nominal_limit = request.POST['nominal_limit']
-            jumlah_peminjaman = request.POST['jumlah_peminjaman']
-            tanggal_pengajuan = request.POST['tanggal_pengajuan']
-            periode_peminjaman = request.POST['periode_peminjaman']
-            status_peminjaman = request.POST['status_peminjaman']
-    
-            peminjamanobj = models.peminjaman.objects.filter(jumlah_peminjaman = jumlah_peminjaman, id_nasabah__nama_nasabah = nama_nasabah)
-            if peminjamanobj.exist() and getpeminjaman.jumlah_peminjaman != jumlah_peminjaman and getpeminjaman.id_nasabah.nama_nasabah != nama_nasabah :
-                messages.error(request, 'Data peminjaman Sudah Ada!')
-                return redirect('update_peminjaman', id)
-    
-            getpeminjaman.id_peminjaman = getpeminjaman.id_peminjaman
-            getpeminjaman.id_nasabah = models.nasabah.objects.get(nama_nasabah = nama_nasabah)
-            getpeminjaman.jumlah_peminjaman = jumlah_peminjaman
-            getpeminjaman.tanggal_pengajuan = tanggal_pengajuan
-            getpeminjaman.periode_peminjaman = periode_peminjaman
-            getpeminjaman.status_peminjaman = status_peminjaman
-    
-            getpeminjaman.save()
 
+<<<<<<< HEAD
+=======
             messages.succes(request, 'Data peminjaman berhasil diperbarui!')
             return redirect('read_peminjaman')
 
@@ -249,6 +227,7 @@ def update_peminjaman(request, id):
             messages.error(request, f'Terjadi kesalahan: {str(e)}')
             return redirect('create_peminjaman')
                             
+>>>>>>> 77d2af7d03b7d2568c40931d407cfd3374bad1f8
 @login_required(login_url='login')
 @role_required(['owner'])
 def delete_peminjaman(request, id):
@@ -367,19 +346,22 @@ def create_nasabah(request):
         return render(request, 'nasabah/create_nasabah.html')
 
     else:
-        nama_pekerjaan = request.POST['nama_pekerjaan']
-        nama_nasabah = request.POST['nama_nasabah']
-        umur_nasabah = request.POST['umur_nasabah']
-        jenis_kelamin = request.POST['jenis_kelamin']
-        alamat_nasabah = request.POST['alamat_nasabah']
-        nama_perusahaan = request.POST['nama_perusahaan']
-        tingkat_pendidikan = request.POST['tingkat_pendidikan']
-        status_pernikahan = request.POST['status_pernikahan']
-        nama_orang_tua = request.POST['nama_orang_tua']
-        nama_lengkap_kontak_darurat = request.POST['nama_lengkap_kontak_darurat']
-        nomor_kontak_darurat = request.POST['nomor_kontak_darurat']
-        hubungan_dengan_peminjam = request.POST['hubungan_dengan_peminjam']
-        sisa_kontrak_kerja = request.POST['sisa_kontrak_kerja']
+        nama_pekerjaan = request.POST.get('nama_pekerjaan')
+        nama_nasabah = request.POST.get('nama_nasabah')
+        umur_nasabah = request.POST.get('umur_nasabah')
+        jenis_kelamin = request.POST.get('jenis_kelamin')
+        alamat_nasabah = request.POST.get('alamat_nasabah')
+        nama_perusahaan = request.POST.get('nama_perusahaan')
+        tingkat_pendidikan = request.POST.get('tingkat_pendidikan')
+        status_pernikahan = request.POST.get('status_pernikahan', 'off')
+        status_pernikahan = True if status_pernikahan == 'on' else False
+        is_active = request.POST.get('is_active', 'off')
+        is_active = True if is_active == 'on' else False
+        nama_orang_tua = request.POST.get('nama_orang_tua')
+        nama_lengkap_kontak_darurat = request.POST.get('nama_lengkap_kontak_darurat')
+        nomor_kontak_darurat = request.POST.get('nomor_kontak_darurat')
+        hubungan_dengan_peminjam = request.POST.get('hubungan_dengan_peminjam')
+        sisa_kontrak_kerja = request.POST.get('sisa_kontrak_kerja')
 
         try:
             jenis_pekerjaan_obj = models.jenis_pekerjaan.objects.get(nama_pekerjaan=nama_pekerjaan)
@@ -423,19 +405,22 @@ def update_nasabah(request, id):
         })
     
     else:
-        nama_pekerjaan = request.POST['nama_pekerjaan']
-        nama_nasabah = request.POST['nama_nasabah']
-        umur_nasabah = request.POST['umur_nasabah']
-        jenis_kelamin = request.POST['jenis_kelamin']
-        alamat_nasabah = request.POST['alamat_nasabah']
-        nama_perusahaan = request.POST['nama_perusahaan']
-        tingkat_pendidikan = request.POST['tingkat_pendidikan']
-        status_pernikahan = request.POST['status_pernikahan']
-        nama_orang_tua = request.POST['nama_orang_tua']
-        nama_lengkap_kontak_darurat = request.POST['nama_lengkap_kontak_darurat']
-        nomor_kontak_darurat = request.POST['nomor_kontak_darurat']
-        hubungan_dengan_peminjam = request.POST['hubungan_dengan_peminjam']
-        sisa_kontrak_kerja = request.POST['sisa_kontrak_kerja']
+        nama_pekerjaan = request.POST.get('nama_pekerjaan')
+        nama_nasabah = request.POST.get('nama_nasabah')
+        umur_nasabah = request.POST.get('umur_nasabah')
+        jenis_kelamin = request.POST.get('jenis_kelamin')
+        alamat_nasabah = request.POST.get('alamat_nasabah')
+        nama_perusahaan = request.POST.get('nama_perusahaan')
+        tingkat_pendidikan = request.POST.get('tingkat_pendidikan')
+        status_pernikahan = request.POST.get('status_pernikahan', 'off')
+        status_pernikahan = True if status_pernikahan == 'on' else False
+        is_active = request.POST.get('is_active', 'off')
+        is_active = True if is_active == 'on' else False
+        nama_orang_tua = request.POST.get('nama_orang_tua')
+        nama_lengkap_kontak_darurat = request.POST.get('nama_lengkap_kontak_darurat')
+        nomor_kontak_darurat = request.POST.get('nomor_kontak_darurat')
+        hubungan_dengan_peminjam = request.POST.get('hubungan_dengan_peminjam')
+        sisa_kontrak_kerja = request.POST.get('sisa_kontrak_kerja')
 
         try:
             getnasabah.id_jenis_pekerjaan = models.jenis_pekerjaan.objects.get(nama_pekerjaan=nama_pekerjaan)

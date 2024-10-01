@@ -30,8 +30,8 @@
             </tr>
         </thead>
         <tbody>
+            {% for i in nasabahobj %}
             <tr>
-                {% for i in nasabahobj %}
                 <td>{{ forloop.counter }}</td>
                 <td>{{ i.id_nasabah }}</td>
                 <td>{{ i.nama_nasabah }}</td>
@@ -56,12 +56,12 @@
             {% endfor %}
         </tbody>
     </table>
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 </body>
 </html>
-{% if messages %}
-<ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}

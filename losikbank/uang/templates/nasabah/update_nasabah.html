@@ -28,7 +28,7 @@
         <input type="text" id="tingkat_pendidikan" name="tingkat_pendidikan" value="{{ getnasabah.tingkat_pendidikan }}" required><br>
         
         <label for="status_pernikahan">Status Pernikahan</label>
-        <label><input type="checkbox" id="status_pernikahan" name="status_pernikahan" value="Menikah" {% if getnasabah.status_pernikahan == 'Menikah' %}checked{% endif %}> Menikah</label><br>
+        <input type="checkbox"id="status_pernikahan" name="status_pernikahan" value="{{ getnasabah.status_pernikahan }}" required><br>
         
         <label for="nama_orang_tua">Nama Orang Tua</label>
         <input type="text" id="nama_orang_tua" name="nama_orang_tua" value="{{ getnasabah.nama_orang_tua }}" required><br>
@@ -36,6 +36,9 @@
         <label for="nama_lengkap_kontak_darurat">Nama Lengkap Kontak Darurat</label>
         <input type="text" id="nama_lengkap_kontak_darurat" name="nama_lengkap_kontak_darurat" value="{{ getnasabah.nama_lengkap_kontak_darurat }}" required><br>
         
+        <label for="nomor_kontak_darurat">Nama Lengkap Kontak Darurat</label>
+        <input type="number" id="nomor_kontak_darurat" name="nomor_kontak_darurat" value="{{ getnasabah.nomor_kontak_darurat }}" required><br>
+
         <label for="hubungan_dengan_peminjam">Hubungan Dengan Peminjam</label>
         <input type="text" id="hubungan_dengan_peminjam" name="hubungan_dengan_peminjam" value="{{ getnasabah.hubungan_dengan_peminjam }}" required><br>
         
