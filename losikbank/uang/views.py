@@ -72,6 +72,7 @@ def create_peminjaman(request):
         return render(request, 'peminjaman/create_peminjaman.html')
 
     else :
+        try
         nama_nasabah = request.POST['nama_nasabah']
         nominal_limit = request.POST['nominal_limit']
         jumlah_peminjaman = request.POST['jumlah_peminjaman']
@@ -95,7 +96,14 @@ def create_peminjaman(request):
             mesaages.success(request, 'Data peminjaman Berhasil Ditambahkan!')
 
             return redirect('read_peminjaman')
-            
+    except models.nasabah.DoesNotExist:
+        messages.error(request, 'Nasabah tidak ditemukan')
+        return redirect('create_peminjaman')
+    
+    except models.limit_peminjaman.DoesNotExist:
+        messages.error(request, 'Limit peminjaman tidak ditemukan')
+        return redirect('create_peminjaman')
+
 @login_required(login_url='login')
 @role_required(['owner'])
 def update_peminjaman(request, id):
