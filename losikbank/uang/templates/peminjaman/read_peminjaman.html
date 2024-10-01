@@ -22,8 +22,8 @@
             </tr>
         </thead>
         <tbody>
+            {% for i in peminjamanobj %}
             <tr>
-                {% for i in peminjamanobj %}
                 <td>{{ forloop.counter }}</td>
                 <td>{{ i.id_peminjaman }}</td>
                 <td>{{ i.jumlah_peminjaman }}</td>
@@ -37,15 +37,20 @@
                 </td>
                 {% endif %}
             </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">Tidak ada peminjaman untuk ditampilkan.</td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
+    
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 </body>
 </html>
-{% if messages %}
-<ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}

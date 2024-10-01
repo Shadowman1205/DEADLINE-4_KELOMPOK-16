@@ -9,28 +9,39 @@
     <h3>Create Nasabah</h3>
     <form method="post">
         {% csrf_token %}
-        <label>Nama Nasabah</label>
-        <input type="text" name="nama_nasabah" >
-        <label>Umur Nasabah</label>
-        <input type="number" name="umur_nasabah">
-        <label>Jenis Kelamin</label>
-        <input type="text" name="jenis_kelamin" >
-        <label>Alamat Nasabah</label>
-        <input type="text" name="alamat_nasabah">
-        <label>Nama Perusahaan</label>
-        <input type="text" name="nama_perusahaan" >
-        <label>Tingkat Pendidikan</label>
-        <input type="text" name="tingkat_pendidikan">
-        <label>Status Pernikahan</label>
-        <label><input type="checkbox" name="status_pernikahan">Menikah</input></label>
-        <label>Nama Orang Tua</label>
-        <input type="text" name="nama_orang_tua">
-        <label>Nama Lengkap Kontak Darurat</label>
-        <input type="text" name="nama_lengkap_kontak_darurat">
-        <label>Hubungan Dengan Peminjam</label>
-        <input type="text" name="hubungan_dengan_peminjam">
-        <label>Sisa Kontrak Kerja</label>
-        <input type="number" name="penghasilan_perbulan">
+        <label for="nama_nasabah">Nama Nasabah</label>
+        <input type="text" id="nama_nasabah" name="nama_nasabah" required><br>
+        
+        <label for="umur_nasabah">Umur Nasabah</label>
+        <input type="number" id="umur_nasabah" name="umur_nasabah" required><br>
+        
+        <label for="jenis_kelamin">Jenis Kelamin</label>
+        <input type="text" id="jenis_kelamin" name="jenis_kelamin" required><br>
+        
+        <label for="alamat_nasabah">Alamat Nasabah</label>
+        <input type="text" id="alamat_nasabah" name="alamat_nasabah" required><br>
+        
+        <label for="nama_perusahaan">Nama Perusahaan</label>
+        <input type="text" id="nama_perusahaan" name="nama_perusahaan" required><br>
+        
+        <label for="tingkat_pendidikan">Tingkat Pendidikan</label>
+        <input type="text" id="tingkat_pendidikan" name="tingkat_pendidikan" required><br>
+        
+        <label for="status_pernikahan">Status Pernikahan</label>
+        <label><input type="checkbox" id="status_pernikahan" name="status_pernikahan"> Menikah</label><br>
+        
+        <label for="nama_orang_tua">Nama Orang Tua</label>
+        <input type="text" id="nama_orang_tua" name="nama_orang_tua" required><br>
+        
+        <label for="nama_lengkap_kontak_darurat">Nama Lengkap Kontak Darurat</label>
+        <input type="text" id="nama_lengkap_kontak_darurat" name="nama_lengkap_kontak_darurat" required><br>
+        
+        <label for="hubungan_dengan_peminjam">Hubungan Dengan Peminjam</label>
+        <input type="text" id="hubungan_dengan_peminjam" name="hubungan_dengan_peminjam" required><br>
+        
+        <label for="sisa_kontrak_kerja">Sisa Kontrak Kerja</label>
+        <input type="number" id="sisa_kontrak_kerja" name="sisa_kontrak_kerja" required><br>
+        
         <button type="submit">Submit</button>
     </form>
 </body>

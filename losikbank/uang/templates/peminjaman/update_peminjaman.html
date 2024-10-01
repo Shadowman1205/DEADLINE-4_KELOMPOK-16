@@ -6,18 +6,29 @@
     <title>Update Peminjaman</title>
 </head>
 <body>
+
     <h3>Update Peminjaman</h3>
+
     <form method="post">
         {% csrf_token %}
-        <label>Jumlah Peminjaman</label>
-        <input type="number" name="jumlah_peminjaman" value="{{ getjumlah_peminjaman.jumlah_peminjaman }}">
-        <label>Tanggal Pengajuan</label>
-        <input type="number" name="tanggal_pengajuan" value="{{ gettanggal_pengajuan.tanggal_pengajuan }}">
-        <label>Periode Peminjaman</label>
-        <input type="number" name="periode_peminjaman" value="{{ getperiode_peminjaman.periode_peminjaman }}">
-        <label>Status Peminjaman</label>
-        <label><input type="checkbox" name="status_peminjaman" value="{{ getperiode_peminjaman.status_peminjaman }}">Berlangsung</input></label>
+        
+        <label>Jumlah Peminjaman:</label>
+        <input type="number" name="jumlah_peminjaman" value="{{ getpeminjaman.jumlah_peminjaman }}" required><br>
+        
+        <label>Tanggal Pengajuan:</label>
+        <input type="date" name="tanggal_pengajuan" value="{{ getpeminjaman.tanggal_pengajuan|date:'Y-m-d' }}" required><br>
+        
+        <label>Periode Peminjaman (Bulan):</label>
+        <input type="number" name="periode_peminjaman" value="{{ getpeminjaman.periode_peminjaman }}" required><br>
+        
+        <label>Status Peminjaman:</label>
+        <label>
+            <input type="checkbox" name="status_peminjaman" value="Berlangsung" {% if getpeminjaman.status_peminjaman == 'Berlangsung' %}checked{% endif %}> 
+            Berlangsung
+        </label><br>
+        
         <button type="submit">Submit</button>
     </form>
+
 </body>
 </html>

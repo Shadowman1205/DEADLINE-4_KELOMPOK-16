@@ -41,7 +41,7 @@ class peminjaman(models.Model):
     id_peminjaman = models.AutoField(primary_key=True)
     id_nasabah = models.ForeignKey(nasabah, on_delete=models.CASCADE)
     id_limit_peminjaman = models.ForeignKey(limit_peminjaman, on_delete=models.CASCADE)
-    jumlah_peminjaman = models.DecimalField(max_digits=12,decimal_places=2)
+    jumlah_peminjaman = models.PositiveIntegerField()
     tanggal_pengajuan = models.DateField()
     periode_peminjaman = models.PositiveIntegerField()
     status_peminjaman = models.BooleanField(default=True)

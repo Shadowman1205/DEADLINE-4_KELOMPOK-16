@@ -9,18 +9,30 @@
     <h3>Create Peminjaman</h3>
     <form method="post">
         {% csrf_token %}
-        <label>Jumlah Peminjaman</label>
-        <input type="number" name="jumlah_peminjaman" >
-        <label>Tanggal Pengajuan</label>
-        <input type="number" name="tanggal_pengajuan">
-        <label>Periode Peminjaman</label>
-        <input type="number" name="periode_peminjaman">
-        <label>Status Peminjaman</label>
-        <label><input type="checkbox" name="status_peminjaman">Berlangsung</input></label>
+
+        <label for="nama_nasabah">Nama Nasabah</label><br>
+        <input type="text" name="nama_nasabah" id="nama_nasabah" placeholder="Masukkan nama nasabah" required><br><br>
+
+        <label for="nominal_limit">Nominal Limit</label><br>
+        <input type="number" name="nominal_limit" id="nominal_limit" placeholder="Masukkan nominal limit" required><br><br>
+
+        <label for="jumlah_peminjaman">Jumlah Peminjaman</label><br>
+        <input type="number" name="jumlah_peminjaman" id="jumlah_peminjaman" placeholder="Masukkan jumlah peminjaman" required><br><br>
+
+        <label for="tanggal_pengajuan">Tanggal Pengajuan</label><br>
+        <input type="date" name="tanggal_pengajuan" id="tanggal_pengajuan" required><br><br>
+
+        <label for="periode_peminjaman">Periode Peminjaman (bulan)</label><br>
+        <input type="number" name="periode_peminjaman" id="periode_peminjaman" placeholder="Masukkan periode peminjaman dalam bulan" required><br><br>
+
+        <label for="status_peminjaman">Status Peminjaman</label><br>
+        <input type="checkbox" name="status_peminjaman" id="status_peminjaman">Berlangsung<br><br>
+
         <button type="submit">Submit</button>
-    </form> 
+    </form>
 </body>
 </html>
+
 
 
 
