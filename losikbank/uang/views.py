@@ -9,28 +9,24 @@ from .decorators import role_required
 # Create your views here.
 
 def loginview(request) : 
-    try:
-        if request.user.is_authenticated :
-            group = None 
-            if request.user.groups.exists() : 
-                group = request.user.groups.all()[0].name
-    
-            if group == 'nasabah' : 
-                return redirect('read_peminjaman') 
-            elif group in ['admin','owner'] : 
-                return redirect('read_peminjaman')
-            else :
-                return redirect('read_peminjaman')
-        else : 
-            return render(request, "base/login.html")
-    except Exception as e:
-        messages.error(request, f"Error: {str(e)}")
-        return redirect('login)
+    if request.user.is_authenticated :
+        group = None 
+        if request.user.groups.exists() : 
+            group = request.user.groups.all()[0].name
+
+        if group == 'nasabah' : 
+            return redirect('read_peminjaman') 
+        elif group in ['admin','owner'] : 
+            return redirect('read_peminjaman')
+        else :
+            return redirect('read_peminjaman')
+    else : 
+        return render(request, "base/login.html")
 
 def performlogin(request) : 
     if request.method !="POST" :
         return HttpResponse("Method not Allowed")
-    try:
+    else:
         username_login = request.POST['username']
         password_login = request.POST['password'] 
         userobj = authenticate(request, username=username_login, password=password_login)
@@ -46,19 +42,12 @@ def performlogin(request) :
         else : 
             messages.error(request,"Username atau Password salah !!!")
             return redirect("login") 
-    except Exception as e:
-        messages.error(request, f"Login Error: {str(e)}")
-        return redirect('login')
 
 @login_required(login_url="login")
-def logoutview(request) :
-    try:
-        logout(request)
-        messages.info(request, "Berhasil Logout")
-        return redirect('Login')
-    except Exception as e:
-        messages.error(request, f"Logout Error: {str(e)}")
-        return redirect('login')
+def logoutview(request) : 
+    logout(request)
+    messages.info(request, "Berhasil Logout")
+    return redirect('Login')
 
 @login_required(login_url="login")
 def performlogout(request) : 
@@ -68,19 +57,16 @@ def performlogout(request) :
 #CRUD PEMINJAMAN
 @role_required(['owner', 'admin', 'nasabah'])
 def read_peminjaman(request):
-    try:
-        peminjamanobj = models.peminjaman.objects.all()
-        if not peminjamanobj.exists():
-            messages.error(request, "Data peminjaman tidak ditemukan!")
-            return redirect('create_peminjaman')  
+    peminjamanobj = models.peminjaman.objects.all()
     
-        return render(request, 'peminjaman/read_peminjaman.html', {
-            'peminjamanobj': peminjamanobj
-        })
-    except Exception as e:
-        messages.error(request, f"Logout Error: {str(e)}")
-        return redirect('login')
-        
+    if not peminjamanobj.exists():
+        messages.error(request, "Data peminjaman tidak ditemukan!")
+        return redirect('create_peminjaman')  
+
+    return render(request, 'peminjaman/read_peminjaman.html', {
+        'peminjamanobj': peminjamanobj
+    })
+    
 
 @login_required(login_url='login')
 @role_required(['owner', 'admin'])
@@ -118,22 +104,6 @@ def create_peminjaman(request):
                 periode_peminjaman=periode_peminjaman,
                 status_peminjaman=status_peminjaman
             ).save()
-
-        peminjamanobj = models.peminjaman.objects.filter(jumlah_peminjaman = jumlah_peminjaman, id_nasabah__nama_nasabah = nama_nasabah)
-        if peminjamanobj.exist():
-         messages.error(request, 'peminjaman sudah ada')
-    
-        else :
-            models.peminjaman(
-                id_nasabah = models.nasabah.objects.get(nama_nasabah = nama_nasabah),
-                id_limit_peminjaman = models.limit_peminjaman.objects.get(nominal_limit = nominal_limit),
-                jumlah_peminjaman = jumlah_peminjaman,
-                tanggal_pengajuan = tanggal_pengajuan,
-                periode_peminjaman = periode_peminjaman,
-                status_peminjaman = status_peminjaman,
-        ).save()
-
-        messages.success(request, 'Data peminjaman Berhasil Ditambahkan!')
 
             messages.success(request, 'Data peminjaman berhasil ditambahkan!')
             return redirect('read_peminjaman')
@@ -210,24 +180,6 @@ def update_peminjaman(request, id):
             messages.error(request, f'Terjadi kesalahan: {str(e)}')
             return redirect('update_peminjaman', id=id)
 
-<<<<<<< HEAD
-=======
-            messages.succes(request, 'Data peminjaman berhasil diperbarui!')
-            return redirect('read_peminjaman')
-
-        except models.nasabah.DoesNotExist:
-            messages.error(request, 'Nasabah tidak ditemukan!')
-            return redirect('create_peminjaman')
-        
-        except models.limit_peminjaman.DoesNotExist:
-            messages.error(request, 'Limit peminjaman tidak ditemukan!')
-            return redirect('create_peminjaman')
-
-        except Exception as e:
-            messages.error(request, f'Terjadi kesalahan: {str(e)}')
-            return redirect('create_peminjaman')
-                            
->>>>>>> 77d2af7d03b7d2568c40931d407cfd3374bad1f8
 @login_required(login_url='login')
 @role_required(['owner'])
 def delete_peminjaman(request, id):
