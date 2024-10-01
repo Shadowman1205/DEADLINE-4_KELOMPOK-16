@@ -72,37 +72,29 @@ def create_peminjaman(request):
         return render(request, 'peminjaman/create_peminjaman.html')
 
     else :
-        try:
-            nama_nasabah = request.POST['nama_nasabah']
-            nominal_limit = request.POST['nominal_limit']
-            jumlah_peminjaman = request.POST['jumlah_peminjaman']
-            tanggal_pengajuan = request.POST['tanggal_pengajuan']
-            periode_peminjaman = request.POST['periode_peminjaman']
-            status_peminjaman = request.POST['status_peminjaman']
+        nama_nasabah = request.POST['nama_nasabah']
+        nominal_limit = request.POST['nominal_limit']
+        jumlah_peminjaman = request.POST['jumlah_peminjaman']
+        tanggal_pengajuan = request.POST['tanggal_pengajuan']
+        periode_peminjaman = request.POST['periode_peminjaman']
+        status_peminjaman = request.POST['status_peminjaman']
 
-            peminjamanobj = models.peminjaman.objects.filter(jumlah_peminjaman = jumlah_peminjaman, id_nasabah__nama_nasabah = nama_nasabah)
-            if peminjamanobj.exist():
-                messages.error(request, 'peminjaman sudah ada')
+        peminjamanobj = models.peminjaman.objects.filter(jumlah_peminjaman = jumlah_peminjaman, id_nasabah__nama_nasabah = nama_nasabah)
+        if peminjamanobj.exist():
+         messages.error(request, 'peminjaman sudah ada')
     
-            else :
-                models.peminjaman(
-                    id_nasabah = models.nasabah.objects.get(nama_nasabah = nama_nasabah),
-                    id_limit_peminjaman = models.limit_peminjaman.objects.get(nominal_limit = nominal_limit),
-                    jumlah_peminjaman = jumlah_peminjaman,
-                    tanggal_pengajuan = tanggal_pengajuan,
-                    periode_peminjaman = periode_peminjaman,
-                    status_peminjaman = status_peminjaman,
-                ).save()
-                mesaages.success(request, 'Data peminjaman Berhasil Ditambahkan!')
+        else :
+        models.peminjaman(
+        id_nasabah = models.nasabah.objects.get(nama_nasabah = nama_nasabah),
+        id_limit_peminjaman = models.limit_peminjaman.objects.get(nominal_limit = nominal_limit),
+        jumlah_peminjaman = jumlah_peminjaman,
+        tanggal_pengajuan = tanggal_pengajuan,
+        periode_peminjaman = periode_peminjaman,
+        status_peminjaman = status_peminjaman,
+        ).save()
+        mesaages.success(request, 'Data peminjaman Berhasil Ditambahkan!')
 
-            return redirect('read_peminjaman')
-    except models.nasabah.DoesNotExist:
-        messages.error(request, 'Nasabah tidak ditemukan')
-        return redirect('create_peminjaman')
-    
-    except models.limit_peminjaman.DoesNotExist:
-        messages.error(request, 'Limit peminjaman tidak ditemukan')
-        return redirect('create_peminjaman')
+        return redirect('read_peminjaman')
 
 @login_required(login_url='login')
 @role_required(['owner'])
@@ -119,30 +111,35 @@ def update_peminjaman(request, id):
         })
     
     else :
-        nama_nasabah = request.POST['nama_nasabah']
-        nominal_limit = request.POST['nominal_limit']
-        jumlah_peminjaman = request.POST['jumlah_peminjaman']
-        tanggal_pengajuan = request.POST['tanggal_pengajuan']
-        periode_peminjaman = request.POST['periode_peminjaman']
-        status_peminjaman = request.POST['status_peminjaman']
-
-        peminjamanobj = models.peminjaman.objects.filter(jumlah_peminjaman = jumlah_peminjaman, id_nasabah__nama_nasabah = nama_nasabah)
-        if peminjamanobj.exist() and getpeminjaman.jumlah_peminjaman != jumlah_peminjaman and getpeminjaman.id_nasabah.nama_nasabah != nama_nasabah :
-            messages.error(request, 'Data peminjaman Sudah Ada!')
-            return redirect('update_peminjaman', id)
-
-        getpeminjaman.id_peminjaman = getpeminjaman.id_peminjaman
-        getpeminjaman.id_nasabah = models.nasabah.objects.get(nama_nasabah = nama_nasabah)
-        getpeminjaman.jumlah_peminjaman = jumlah_peminjaman
-        getpeminjaman.tanggal_pengajuan = tanggal_pengajuan
-        getpeminjaman.periode_peminjaman = periode_peminjaman
-        getpeminjaman.status_peminjaman = status_peminjaman
-
-        getpeminjaman.save()
-
-        messages.succes(request, 'Data peminjaman berhasil diperbarui!')
-        return redirect('read_peminjaman')
-
+        try:
+            nama_nasabah = request.POST['nama_nasabah']
+            nominal_limit = request.POST['nominal_limit']
+            jumlah_peminjaman = request.POST['jumlah_peminjaman']
+            tanggal_pengajuan = request.POST['tanggal_pengajuan']
+            periode_peminjaman = request.POST['periode_peminjaman']
+            status_peminjaman = request.POST['status_peminjaman']
+    
+            peminjamanobj = models.peminjaman.objects.filter(jumlah_peminjaman = jumlah_peminjaman, id_nasabah__nama_nasabah = nama_nasabah)
+            if peminjamanobj.exist() and getpeminjaman.jumlah_peminjaman != jumlah_peminjaman and getpeminjaman.id_nasabah.nama_nasabah != nama_nasabah :
+                messages.error(request, 'Data peminjaman Sudah Ada!')
+                return redirect('update_peminjaman', id)
+    
+            getpeminjaman.id_peminjaman = getpeminjaman.id_peminjaman
+            getpeminjaman.id_nasabah = models.nasabah.objects.get(nama_nasabah = nama_nasabah)
+            getpeminjaman.jumlah_peminjaman = jumlah_peminjaman
+            getpeminjaman.tanggal_pengajuan = tanggal_pengajuan
+            getpeminjaman.periode_peminjaman = periode_peminjaman
+            getpeminjaman.status_peminjaman = status_peminjaman
+    
+            getpeminjaman.save()
+    
+            messages.succes(request, 'Data peminjaman berhasil diperbarui!')
+            return redirect('read_peminjaman')
+            
+        except models.nasabah.DoesNotExist:
+            messages.error(request, 'Nasabah tidak ditemukan')
+            return redirect('update_peminjaman, id)
+                            
 @login_required(login_url='login')
 @role_required(['owner'])
 def delete_peminjaman(request, id):
