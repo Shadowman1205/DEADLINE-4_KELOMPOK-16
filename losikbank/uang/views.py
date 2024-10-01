@@ -236,6 +236,18 @@ def update_peminjaman(request, id):
 
             messages.succes(request, 'Data peminjaman berhasil diperbarui!')
             return redirect('read_peminjaman')
+
+        except models.nasabah.DoesNotExist:
+            messages.error(request, 'Nasabah tidak ditemukan!')
+            return redirect('create_peminjaman')
+        
+        except models.limit_peminjaman.DoesNotExist:
+            messages.error(request, 'Limit peminjaman tidak ditemukan!')
+            return redirect('create_peminjaman')
+
+        except Exception as e:
+            messages.error(request, f'Terjadi kesalahan: {str(e)}')
+            return redirect('create_peminjaman')
                             
 @login_required(login_url='login')
 @role_required(['owner'])
