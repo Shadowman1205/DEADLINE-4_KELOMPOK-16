@@ -464,7 +464,7 @@ def update_limit_peminjaman(request, id):
         })
     
     else :
-        nominal_limit - request.POST['nominal_limit']
+        nominal_limit = request.POST['nominal_limit']
        
         getlimit_peminjaman.id_limit_peminjaman = getlimit_peminjaman.id_limit_peminjaman
         getlimit_peminjaman.nominal_limit = nominal_limit
