@@ -10,41 +10,40 @@ from .decorators import role_required
 
 # Create your views here.
 
-def loginview(request):
-    if request.user.is_authenticated:
-        group = None
-        if request.user.groups.exists():
+def loginview(request) : 
+    if request.user.is_authenticated :
+        group = None 
+        if request.user.groups.exists() : 
             group = request.user.groups.all()[0].name
 
-        return redirect('read_peminjaman')
-    else:
+        if group == 'nasabah' : 
+            return redirect('read_peminjaman') 
+        elif group in ['admin','owner'] : 
+            return redirect('read_peminjaman')
+        else :
+            return redirect('read_peminjaman')
+    else : 
         return render(request, "base/login.html")
 
-def performlogin(request):
-    if request.method != "POST":
+def performlogin(request) : 
+    if request.method !="POST" :
         return HttpResponse("Method not Allowed")
     else:
         username_login = request.POST['username']
-        password_login = request.POST['password']
+        password_login = request.POST['password'] 
         userobj = authenticate(request, username=username_login, password=password_login)
-        if userobj is not None:
-            login(request, userobj)
+        if userobj is not None : 
+            login(request, userobj) 
             messages.success(request, "Login success")
-            return redirect("read_peminjaman")
-        else:
-            messages.error(request, "Username atau Password salah !!!")
-            return redirect("login")
-
-@login_required(login_url="login")
-def logoutview(request):
-    logout(request)
-    messages.info(request, "Berhasil Logout")
-    return redirect('login')
-
-@login_required(login_url="login")
-def performlogout(request):
-    logout(request)
-    return redirect("login")
+            if userobj.groups.filter(name='admin').exists() or userobj.groups.filter(name='owner') : 
+                return redirect("read_peminjaman") 
+            elif userobj.groups.filter(name='nasabah').exists() : 
+                return redirect("read_peminjaman")
+            elif userobj.groups.filter(name='produksi').exists() :
+                return redirect('read_peminjaman')
+        else : 
+            messages.error(request,"Username atau Password salah !!!")
+            return redirect("login") 
 
 # CRUD PEMINJAMAN
 @role_required(['owner', 'admin', 'nasabah'])
