@@ -12,20 +12,17 @@
     <form method="post">
         {% csrf_token %}
         
-        <label>Jumlah Peminjaman:</label>
-        <input type="number" name="jumlah_peminjaman" value="{{ getpeminjaman.jumlah_peminjaman }}" required><br>
+        <label for="jumlah_peminjaman">Jumlah Peminjaman:</label>
+        <input type="number" id="jumlah_peminjaman" name="jumlah_peminjaman" value="{{ getpeminjaman.jumlah_peminjaman }}" required><br><br>
         
-        <label>Tanggal Pengajuan:</label>
-        <input type="date" name="tanggal_pengajuan" value="{{ getpeminjaman.tanggal_pengajuan|date:'Y-m-d' }}" required><br>
+        <label for="tanggal_pengajuan">Tanggal Pengajuan:</label>
+        <input type="date" id="tanggal_pengajuan" name="tanggal_pengajuan" value="{{ getpeminjaman.tanggal_pengajuan|date:'Y-m-d' }}" required><br><br>
         
-        <label>Periode Peminjaman (Bulan):</label>
-        <input type="number" name="periode_peminjaman" value="{{ getpeminjaman.periode_peminjaman }}" required><br>
+        <label for="periode_peminjaman">Periode Peminjaman (Bulan):</label>
+        <input type="number" id="periode_peminjaman" name="periode_peminjaman" value="{{ getpeminjaman.periode_peminjaman }}" required><br><br>
         
-        <label>Status Peminjaman:</label>
-        <label>
-            <input type="checkbox" name="status_peminjaman" value="Berlangsung" {% if getpeminjaman.status_peminjaman == 'Berlangsung' %}checked{% endif %}> 
-            Berlangsung
-        </label><br>
+        <label for="status_peminjaman">Status Peminjaman:</label>
+        <input type="checkbox" id="status_peminjaman" name="status_peminjaman" {% if getpeminjaman.status_peminjaman %}checked{% endif %}> Berlangsung<br><br>
         
         <button type="submit">Submit</button>
     </form>
