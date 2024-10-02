@@ -1,8 +1,6 @@
-# views.py
-
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect 
 from django.http import HttpResponse
-from . import models
+from . import models 
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
@@ -45,18 +43,30 @@ def performlogin(request) :
             messages.error(request,"Username atau Password salah !!!")
             return redirect("login") 
 
-# CRUD PEMINJAMAN
+@login_required(login_url="login")
+def logoutview(request) : 
+    logout(request)
+    messages.info(request, "Berhasil Logout")
+    return redirect('Login')
+
+@login_required(login_url="login")
+def performlogout(request) : 
+    logout(request)
+    return redirect("login")
+
+#CRUD PEMINJAMAN
 @role_required(['owner', 'admin', 'nasabah'])
 def read_peminjaman(request):
     peminjamanobj = models.peminjaman.objects.all()
-
+    
     if not peminjamanobj.exists():
         messages.error(request, "Data peminjaman tidak ditemukan!")
-        return redirect('create_peminjaman')
+        return redirect('create_peminjaman')  
 
     return render(request, 'peminjaman/read_peminjaman.html', {
         'peminjamanobj': peminjamanobj
     })
+    
 
 @login_required(login_url='login')
 @role_required(['owner', 'admin'])
@@ -69,24 +79,24 @@ def create_peminjaman(request):
         jumlah_peminjaman = request.POST.get('jumlah_peminjaman')
         tanggal_pengajuan = request.POST.get('tanggal_pengajuan')
         periode_peminjaman = request.POST.get('periode_peminjaman')
+        status_peminjaman = request.POST.get('status_peminjaman')
         status_peminjaman = request.POST.get('status_peminjaman', 'off')
         status_peminjaman = True if status_peminjaman == 'on' else False
-
-        if not all([nama_nasabah, nominal_limit, jumlah_peminjaman, tanggal_pengajuan, periode_peminjaman]):
+            
+        if not all([nama_nasabah, nominal_limit, jumlah_peminjaman, tanggal_pengajuan, periode_peminjaman, status_peminjaman]):
             messages.error(request, 'Semua kolom wajib diisi!')
             return redirect('create_peminjaman')
-
+        
         try:
             nasabah = models.nasabah.objects.get(nama_nasabah=nama_nasabah)
             limit_peminjaman = models.limit_peminjaman.objects.get(nominal_limit=nominal_limit)
-
+            
             peminjamanobj = models.peminjaman.objects.filter(
                 jumlah_peminjaman=jumlah_peminjaman, id_nasabah__nama_nasabah=nama_nasabah
             )
             if peminjamanobj.exists():
                 messages.error(request, 'Peminjaman sudah ada!')
                 return redirect('create_peminjaman')
-
             models.peminjaman(
                 id_nasabah=nasabah,
                 id_limit_peminjaman=limit_peminjaman,
@@ -102,7 +112,7 @@ def create_peminjaman(request):
         except models.nasabah.DoesNotExist:
             messages.error(request, 'Nasabah tidak ditemukan!')
             return redirect('create_peminjaman')
-
+        
         except models.limit_peminjaman.DoesNotExist:
             messages.error(request, 'Limit peminjaman tidak ditemukan!')
             return redirect('create_peminjaman')
@@ -111,6 +121,7 @@ def create_peminjaman(request):
             messages.error(request, f'Terjadi kesalahan: {str(e)}')
             return redirect('create_peminjaman')
 
+            
 @login_required(login_url='login')
 @role_required(['owner'])
 def update_peminjaman(request, id):
@@ -121,9 +132,12 @@ def update_peminjaman(request, id):
         messages.error(request, 'Data peminjaman tidak ditemukan!')
         return redirect('read_peminjaman')
 
+    nama_nasabah = getpeminjaman.id_nasabah.nama_nasabah
+
     if request.method == 'GET':
         return render(request, 'peminjaman/update_peminjaman.html', {
             'getpeminjaman': getpeminjaman,
+            'nama_nasabah': nama_nasabah,
             'nasabahobj': nasabahobj,
             'id': id
         })
@@ -133,38 +147,34 @@ def update_peminjaman(request, id):
         jumlah_peminjaman = request.POST.get('jumlah_peminjaman')
         tanggal_pengajuan = request.POST.get('tanggal_pengajuan')
         periode_peminjaman = request.POST.get('periode_peminjaman')
+        status_peminjaman = request.POST.get('status_peminjaman')
         status_peminjaman = request.POST.get('status_peminjaman', 'off')
         status_peminjaman = True if status_peminjaman == 'on' else False
 
-        if not all([nama_nasabah, nominal_limit, jumlah_peminjaman, tanggal_pengajuan, periode_peminjaman]):
-            messages.error(request, 'Semua kolom wajib diisi!')
-            return redirect('update_peminjaman', id=id)
-
         try:
             nasabah = models.nasabah.objects.get(nama_nasabah=nama_nasabah)
-
+            
             peminjamanobj = models.peminjaman.objects.filter(
                 jumlah_peminjaman=jumlah_peminjaman, id_nasabah__nama_nasabah=nama_nasabah
             )
             if peminjamanobj.exists() and (getpeminjaman.jumlah_peminjaman != jumlah_peminjaman or getpeminjaman.id_nasabah.nama_nasabah != nama_nasabah):
-                messages.error(request, 'Data peminjaman sudah ada!')
-                return redirect('update_peminjaman', id=id)
 
-            getpeminjaman.id_nasabah = nasabah
-            getpeminjaman.id_limit_peminjaman = nominal_limit
-            getpeminjaman.jumlah_peminjaman = jumlah_peminjaman
-            getpeminjaman.tanggal_pengajuan = tanggal_pengajuan
-            getpeminjaman.periode_peminjaman = periode_peminjaman
-            getpeminjaman.status_peminjaman = status_peminjaman
-            getpeminjaman.save()
+                
+                getpeminjaman.id_nasabah = nasabah
+                getpeminjaman.id_limit_peminjaman = nominal_limit
+                getpeminjaman.jumlah_peminjaman = jumlah_peminjaman
+                getpeminjaman.tanggal_pengajuan = tanggal_pengajuan
+                getpeminjaman.periode_peminjaman = periode_peminjaman
+                getpeminjaman.status_peminjaman = status_peminjaman
+                getpeminjaman.save()
 
-            messages.success(request, 'Data peminjaman berhasil diperbarui!')
-            return redirect('read_peminjaman')
+                messages.success(request, 'Data peminjaman berhasil diperbarui!')
+                return redirect('read_peminjaman')
 
         except models.nasabah.DoesNotExist:
             messages.error(request, 'Nasabah tidak ditemukan!')
             return redirect('update_peminjaman', id=id)
-
+        
         except Exception as e:
             messages.error(request, f'Terjadi kesalahan: {str(e)}')
             return redirect('update_peminjaman', id=id)
@@ -172,29 +182,30 @@ def update_peminjaman(request, id):
 @login_required(login_url='login')
 @role_required(['owner'])
 def delete_peminjaman(request, id):
-    getpeminjaman = models.peminjaman.objects.get(id_peminjaman=id)
+    getpeminjaman = models.peminjaman.objects.get(id_peminjaman = id)
     getpeminjaman.delete()
 
-    messages.success(request, "Data peminjaman berhasil dihapus!")
+    messages.error(request, "Data peminjaman berhasil dihapus!")
     return redirect('read_peminjaman')
 
-# CRUD JENIS PEKERJAAN
+#CRUD JENIS PEKERJAAN
 @login_required(login_url='login')
 @role_required(['owner', 'admin', 'nasabah'])
-def read_jenis_pekerjaan(request):
+def read_jenis_pekerjaan(request) : 
     jenis_pekerjaanobj = models.jenis_pekerjaan.objects.all()
-    if not jenis_pekerjaanobj.exists():
+    if not jenis_pekerjaanobj.exists() : 
         messages.error(request, "Jenis Pekerjaan Tidak Ditemukan!")
 
-    return render(request, 'jenis_pekerjaan/read_jenis_pekerjaan.html', {
-        'jenis_pekerjaanobj': jenis_pekerjaanobj
-    })
+    return render(request, 'jenis_pekerjaan/read_jenis_pekerjaan.html', { 
+        'jenis_pekerjaanobj' : jenis_pekerjaanobj
+    })    
 
 @login_required(login_url='login')
 @role_required(['owner'])
 def create_jenis_pekerjaan(request):
     if request.method == 'GET':
         return render(request, 'jenis_pekerjaan/create_jenis_pekerjaan.html')
+
     else:
         nama_pekerjaan = request.POST.get('nama_pekerjaan')
         penghasilan_perbulan = request.POST.get('penghasilan_perbulan')
@@ -222,16 +233,18 @@ def create_jenis_pekerjaan(request):
 @login_required(login_url='login')
 @role_required(['owner'])
 def update_jenis_pekerjaan(request, id):
-    try:
+    try :
         getjenis_pekerjaan = models.jenis_pekerjaan.objects.get(id_jenis_pekerjaan=id)
     except models.jenis_pekerjaan.DoesNotExist:
-        messages.error(request, 'Jenis pekerjaan tidak ditemukan.')
+        messages.error(request, 'jenis pekerjaan tidak ditemukan.')
         return redirect('read_jenis_pekerjaan')
 
+    
     if request.method == 'GET':
         return render(request, 'jenis_pekerjaan/update_jenis_pekerjaan.html', {
             'getjenis_pekerjaan': getjenis_pekerjaan,
         })
+    
     else:
         nama_pekerjaan = request.POST.get('nama_pekerjaan')
         penghasilan_perbulan = request.POST.get('penghasilan_perbulan')
@@ -251,6 +264,7 @@ def update_jenis_pekerjaan(request, id):
             else:
                 messages.error(request, 'Data Jenis Pekerjaan sudah ada!')
                 return redirect('update_jenis_pekerjaan', id=id)
+            
         except models.jenis_pekerjaan.DoesNotExist:
             getjenis_pekerjaan.nama_pekerjaan = nama_pekerjaan
             getjenis_pekerjaan.penghasilan_perbulan = penghasilan_perbulan
@@ -264,29 +278,30 @@ def update_jenis_pekerjaan(request, id):
 @login_required(login_url='login')
 @role_required(['owner'])
 def delete_jenis_pekerjaan(request, id):
-    getjenis_pekerjaan = models.jenis_pekerjaan.objects.get(id_jenis_pekerjaan=id)
+    getjenis_pekerjaan = models.jenis_pekerjaan.objects.get(id_jenis_pekerjaan = id)
     getjenis_pekerjaan.delete()
 
-    messages.success(request, "Data Jenis Pekerjaan berhasil dihapus!")
+    messages.error(request, "Data Jenis Pekerjaan berhasil dihapus!")
     return redirect('read_jenis_pekerjaan')
 
-# CRUD NASABAH
+#CRUD NASABAH
 @login_required(login_url='login')
 @role_required(['owner', 'admin', 'nasabah'])
-def read_nasabah(request):
+def read_nasabah(request) : 
     nasabahobj = models.nasabah.objects.all()
-    if not nasabahobj.exists():
+    if not nasabahobj.exists() : 
         messages.error(request, "Data Nasabah Tidak Ditemukan!")
 
-    return render(request, 'nasabah/read_nasabah.html', {
-        'nasabahobj': nasabahobj
-    })
+    return render(request, 'nasabah/read_nasabah.html', { 
+        'nasabahobj' : nasabahobj
+    })    
 
 @login_required(login_url='login')
 @role_required(['owner', 'nasabah'])
 def create_nasabah(request):
     if request.method == 'GET':
         return render(request, 'nasabah/create_nasabah.html')
+
     else:
         nama_pekerjaan = request.POST.get('nama_pekerjaan')
         nama_nasabah = request.POST.get('nama_nasabah')
@@ -323,9 +338,11 @@ def create_nasabah(request):
             nasabah.save()
             messages.success(request, 'Data Nasabah berhasil ditambahkan!')
             return redirect('read_nasabah')
+        
         except models.jenis_pekerjaan.DoesNotExist:
             messages.error(request, 'Jenis pekerjaan tidak ditemukan.')
             return redirect('create_nasabah')
+        
         except Exception as e:
             messages.error(request, f'Terjadi kesalahan: {str(e)}')
             return redirect('create_nasabah')
@@ -343,6 +360,7 @@ def update_nasabah(request, id):
         return render(request, 'nasabah/update_nasabah.html', {
             'getnasabah': getnasabah,
         })
+    
     else:
         nama_pekerjaan = request.POST.get('nama_pekerjaan')
         nama_nasabah = request.POST.get('nama_nasabah')
@@ -372,10 +390,15 @@ def update_nasabah(request, id):
             getnasabah.nama_lengkap_kontak_darurat = nama_lengkap_kontak_darurat
             getnasabah.nomor_kontak_darurat = nomor_kontak_darurat
             getnasabah.hubungan_dengan_peminjam = hubungan_dengan_peminjam
-            getnasabah.sisa_kontrak_kerja = sisa_kontrak_kerja if sisa_kontrak_kerja else None
+            if sisa_kontrak_kerja:
+                getnasabah.sisa_kontrak_kerja = sisa_kontrak_kerja
+            else:
+                getnasabah.sisa_kontrak_kerja = None 
             getnasabah.save()
+            
             messages.success(request, 'Data Nasabah berhasil diperbarui!')
             return redirect('read_nasabah')
+        
         except models.jenis_pekerjaan.DoesNotExist:
             messages.error(request, 'Jenis pekerjaan tidak ditemukan.')
             return redirect('update_nasabah', id=id)
@@ -383,73 +406,73 @@ def update_nasabah(request, id):
             messages.error(request, f'Terjadi kesalahan: {str(e)}')
             return redirect('update_nasabah', id=id)
 
+
 @login_required(login_url='login')
 @role_required(['owner'])
 def delete_nasabah(request, id):
-    getnasabah = models.nasabah.objects.get(id_nasabah=id)
+    getnasabah = models.nasabah.objects.get(id_nasabah = id)
     getnasabah.delete()
 
-# CRUD LIMIT PEMINJAMAN
+    messages.error(request, "Data Nasabah berhasil dihapus!")
+    return redirect('read_nasabah')
+
+#CRUD LIMIT PEMINJAMAN
 @login_required(login_url='login')
 @role_required(['owner', 'admin', 'nasabah'])
-def read_limit_peminjaman(request):
+def read_limit_peminjaman(request) : 
     limit_peminjamanobj = models.limit_peminjaman.objects.all()
-    if not limit_peminjamanobj.exists():
+    if not limit_peminjamanobj.exists() : 
         messages.error(request, "Limit Peminjaman tidak ditemukan!")
 
-    return render(request, 'limit_peminjaman/read_limit_peminjaman.html', {
-        'limit_peminjamanobj': limit_peminjamanobj
-    })
+    return render(request, 'limit_peminjaman/read_limit_peminjaman.html', { 
+        'limit_peminjamanobj' : limit_peminjamanobj
+    })    
 
 @login_required(login_url='login')
-@role_required(['owner', 'admin'])
+@role_required(['owner','admin'])
 def create_limit_peminjaman(request):
     jenis_pekerjaanobj = models.jenis_pekerjaan.objects.all()
     if request.method == 'GET':
         return render(request, 'limit_peminjaman/create_limit_peminjaman.html', {
-            'jenis_pekerjaanobj': jenis_pekerjaanobj
+            'jenis_pekerjaanobj' : jenis_pekerjaanobj
         })
-    else:
+
+    else :
         nama_pekerjaan = request.POST.get('nama_pekerjaan')
         nominal_limit = request.POST.get('nominal_limit')
 
         part1, part2 = nama_pekerjaan.split(' - ')
+
         part1 = part1.strip()
         part2 = int(part2.strip())
 
-        try:
-            getlimitpeminjaman = models.jenis_pekerjaan.objects.get(nama_pekerjaan=part1, penghasilan_perbulan=part2)
-            limitpeminjamanobj = models.limit_peminjaman.objects.filter(id_jenis_pekerjaan=getlimitpeminjaman)
+        getlimitpeminjaman = models.jenis_pekerjaan.objects.get(nama_pekerjaan = part1, penghasilan_perbulan = part2)
+        limitpeminjamanobj = models.limit_peminjaman.objects.filter(id_jenis_pekerjaan = getlimitpeminjaman)
 
-            if limitpeminjamanobj.exists():
-                messages.error(request, 'Data Limit Peminjaman Sudah Ada!')
-                return redirect('create_limit_peminjaman')
-            else:
-                models.limit_peminjaman(
-                    id_jenis_pekerjaan=getlimitpeminjaman,
-                    nominal_limit=nominal_limit,
-                ).save()
-                messages.success(request, 'Limit Pekerjaan berhasil ditambahkan!')
-                return redirect('read_limit_peminjaman')
-        except models.jenis_pekerjaan.DoesNotExist:
-            messages.error(request, 'Jenis pekerjaan tidak ditemukan.')
+        if limitpeminjamanobj.exists() :
+            messages.error(request, 'Data Limit Peminjaman Sudah Ada!')
             return redirect('create_limit_peminjaman')
 
-@login_required(login_url='login')
-@role_required(['owner', 'admin'])
-def update_limit_peminjaman(request, id):
-    try:
-        getlimit_peminjaman = models.limit_peminjaman.objects.get(id_limit_peminjaman=id)
-    except models.limit_peminjaman.DoesNotExist:
-        messages.error(request, 'Limit Peminjaman tidak ditemukan.')
-        return redirect('read_limit_peminjaman')
+        else :
+            models.limit_peminjaman(
+                id_jenis_pekerjaan = models.jenis_pekerjaan.objects.get(nama_pekerjaan = part1, penghasilan_perbulan = part2),
+                nominal_limit = nominal_limit,
+            ).save()
+            messages.success(request, 'Limit Pekerjaan berhasil ditambahkan!')
+            return redirect('read_limit_peminjaman')
 
+@login_required(login_url='login')
+@role_required(['owner','admin'])
+def update_limit_peminjaman(request, id):
+    getlimit_peminjaman = models.limit_peminjaman.objects.get(id_limit_peminjaman = id)
     if request.method == 'GET':
         return render(request, 'limit_peminjaman/update_limit_peminjaman.html', {
-            'getlimit_peminjaman': getlimit_peminjaman,
+            'getlimit_peminjaman' : getlimit_peminjaman,
         })
-    else:
+    
+    else :
         nominal_limit = request.POST.get('nominal_limit')
+        getlimit_peminjaman.id_limit_peminjaman = getlimit_peminjaman.id_limit_peminjaman
         getlimit_peminjaman.nominal_limit = nominal_limit
         getlimit_peminjaman.save()
         messages.success(request, 'Data Limit Peminjaman berhasil diperbarui!')
@@ -458,13 +481,8 @@ def update_limit_peminjaman(request, id):
 @login_required(login_url='login')
 @role_required(['owner'])
 def delete_limit_peminjaman(request, id):
-    try:
-        getlimit_peminjaman = models.limit_peminjaman.objects.get(id_limit_peminjaman=id)
-        getlimit_peminjaman.delete()
-        messages.success(request, "Data Limit Peminjaman berhasil dihapus!")
-    except models.limit_peminjaman.DoesNotExist:
-        messages.error(request, 'Limit Peminjaman tidak ditemukan.')
-    return redirect('read_limit_peminjaman')
+    getlimit_peminjaman = models.limit_peminjaman.objects.get(id_limit_peminjaman = id)
+    getlimit_peminjaman.delete()
 
-    messages.success(request, "Data Nasabah berhasil dihapus!")
-    return redirect('read_nasabah')
+    messages.error(request, "Data Limit Peminjaman berhasil dihapus!")
+    return redirect('read_limit_peminjaman')
