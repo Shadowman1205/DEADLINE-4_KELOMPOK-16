@@ -9,11 +9,11 @@
     <h3>Update Jenis Pekerjaan</h3>
     <form method="post">
         {% csrf_token %}
-        <label for="nama_pekerjaan">Nama Pekerjaan</label><br>
-        <input type="text" id="nama_pekerjaan" name="nama_pekerjaan" value="{{ getjenis_pekerjaan.nama_pekerjaan }}" required><br><br>
+        <label for="nama_pekerjaan">Nama Pekerjaan</label>
+        <input type="text" id="nama_pekerjaan" name="nama_pekerjaan" value="{{ getjenis_pekerjaan.nama_pekerjaan }}" required/>
         
-        <label for="penghasilan_perbulan">Penghasilan per Bulan</label><br>
-        <input type="number" id="penghasilan_perbulan" name="penghasilan_perbulan" value="{{ getjenis_pekerjaan.penghasilan_perbulan }}" required><br><br>
+        <label for="penghasilan_perbulan">Penghasilan per Bulan</label>
+        <input type="number" id="penghasilan_perbulan" name="penghasilan_perbulan" value="{{ getjenis_pekerjaan.penghasilan_perbulan }}" required/>
         
         <button type="submit">Submit</button>
     </form>
