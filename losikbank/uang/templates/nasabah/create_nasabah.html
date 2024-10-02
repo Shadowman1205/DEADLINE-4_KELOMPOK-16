@@ -9,44 +9,44 @@
     <h3>Create Nasabah</h3>
     <form method="post">
         {% csrf_token %}
-        <label for="nama_nasabah">Nama Nasabah</label>
-        <input type="text" id="nama_nasabah" name="nama_nasabah" required><br>
+        <label for="nama_nasabah">Nama Nasabah</label><br>
+        <input type="text" id="nama_nasabah" name="nama_nasabah" required><br><br>
 
-        <label for="nama_pekerjaan">Nama Pekerjaan</label>
-        <input type="text" id="nama_pekerjaan" name="nama_pekerjaan" required><br>
+        <label for="nama_pekerjaan">Nama Pekerjaan</label><br>
+        <input type="text" id="nama_pekerjaan" name="nama_pekerjaan" required><br><br>
         
-        <label for="umur_nasabah">Umur Nasabah</label>
-        <input type="number" id="umur_nasabah" name="umur_nasabah" required><br>
+        <label for="umur_nasabah">Umur Nasabah</label><br>
+        <input type="number" id="umur_nasabah" name="umur_nasabah" required><br><br>
         
-        <label for="jenis_kelamin">Jenis Kelamin</label>
-        <input type="text" id="jenis_kelamin" name="jenis_kelamin" required><br>
+        <label for="jenis_kelamin">Jenis Kelamin</label><br>
+        <input type="text" id="jenis_kelamin" name="jenis_kelamin" required><br><br>
         
-        <label for="alamat_nasabah">Alamat Nasabah</label>
-        <input type="text" id="alamat_nasabah" name="alamat_nasabah" required><br>
+        <label for="alamat_nasabah">Alamat Nasabah</label><br>
+        <input type="text" id="alamat_nasabah" name="alamat_nasabah" required><br><br>
         
-        <label for="nama_perusahaan">Nama Perusahaan</label>
-        <input type="text" id="nama_perusahaan" name="nama_perusahaan" required><br>
+        <label for="nama_perusahaan">Nama Perusahaan</label><br>
+        <input type="text" id="nama_perusahaan" name="nama_perusahaan" required><br><br>
         
-        <label for="tingkat_pendidikan">Tingkat Pendidikan</label>
-        <input type="text" id="tingkat_pendidikan" name="tingkat_pendidikan" required><br>
+        <label for="tingkat_pendidikan">Tingkat Pendidikan</label><br>
+        <input type="text" id="tingkat_pendidikan" name="tingkat_pendidikan" required><br><br>
         
-        <label for="status_pernikahan">Status Pernikahan</label>
-        <input type="checkbox" name="is_active" id="is_active" {% if form_data.is_active == 'on' %}checked{% endif %}>
+        <label for="status_pernikahan">Status Pernikahan</label><br>
+        <input type="checkbox" name="status_pernikahan" id="status_pernikahan" {% if form_data.is_active == 'on' %}checked{% endif %}><br><br>
         
-        <label for="nama_orang_tua">Nama Orang Tua</label>
-        <input type="text" id="nama_orang_tua" name="nama_orang_tua" required><br>
+        <label for="nama_orang_tua">Nama Orang Tua</label><br>
+        <input type="text" id="nama_orang_tua" name="nama_orang_tua" required><br><br>
         
-        <label for="nama_lengkap_kontak_darurat">Nama Lengkap Kontak Darurat</label>
-        <input type="text" id="nama_lengkap_kontak_darurat" name="nama_lengkap_kontak_darurat" required><br>
+        <label for="nama_lengkap_kontak_darurat">Nama Lengkap Kontak Darurat</label><br>
+        <input type="text" id="nama_lengkap_kontak_darurat" name="nama_lengkap_kontak_darurat" required><br><br>
 
-        <label for="nomor_kontak_darurat">Nomor Kontak Darurat</label>
-        <input type="number" id="nama_kontak_darurat" name="nomor_kontak_darurat" required><br>
+        <label for="nomor_kontak_darurat">Nomor Kontak Darurat</label><br>
+        <input type="number" id="nomor_kontak_darurat" name="nomor_kontak_darurat" required><br><br>
         
-        <label for="hubungan_dengan_peminjam">Hubungan Dengan Peminjam</label>
-        <input type="text" id="hubungan_dengan_peminjam" name="hubungan_dengan_peminjam" required><br>
+        <label for="hubungan_dengan_peminjam">Hubungan Dengan Peminjam</label><br>
+        <input type="text" id="hubungan_dengan_peminjam" name="hubungan_dengan_peminjam" required><br><br>
         
-        <label for="sisa_kontrak_kerja">Sisa Kontrak Kerja</label>
-        <input type="number" id="sisa_kontrak_kerja" name="sisa_kontrak_kerja" required><br>
+        <label for="sisa_kontrak_kerja">Sisa Kontrak Kerja</label><br>
+        <input type="number" id="sisa_kontrak_kerja" name="sisa_kontrak_kerja"><br><br>
         
         <button type="submit">Submit</button>
     </form>
